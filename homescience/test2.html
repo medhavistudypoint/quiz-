@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Science - Test 2</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; padding-bottom: 40px; }
         .cbt-header { background-color: #0b1e47; color: white; padding: 15px; text-align: center; border-bottom: 3px solid #ffcc00; }
         .cbt-header h1 { margin: 0; font-size: 20px; color: #ffcc00; }
         .main-container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
         .card-panel { background-color: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .question-text { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
-        .option-item { display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
-        .option-item:hover { background-color: #f8fafc; }
-        .btn { display: block; width: 100%; padding: 12px; text-align: center; background-color: #0b1e47; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        .option-item { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+        .option-item:hover { background-color: #f8fafc; border-color: #0b1e47; }
+        .option-item.selected { background-color: #e2e8f0; border-color: #0b1e47; font-weight: bold; color: #0b1e47; }
+        .btn { display: block; width: 100%; padding: 14px; text-align: center; background-color: #0b1e47; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 16px; margin-bottom: 15px; }
+        .btn-submit { background-color: #28a745; margin-top: 20px; }
+        .btn-submit:hover { background-color: #218838; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 999; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-content h2 { color: #0b1e47; margin-top: 0; }
+        .score-box { font-size: 24px; font-weight: bold; color: #28a745; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -24,49 +31,91 @@
     </div>
 
     <div class="main-container">
-        <div class="card-panel">
+        <div class="card-panel" data-q="1">
             <div class="question-text">Q_1. मानव विकास की किस अवस्था को 'तूफान और तनाव की अवस्था' कहा जाता है?</div>
-            <div class="option-item">(a) शैशवावस्था</div>
-            <div class="option-item">(b) बाल्यावस्था</div>
-            <div class="option-item">(c) किशोरावस्था</div>
-            <div class="option-item">(d) प्रौढ़ावस्था</div>
+            <div class="option-item" data-ans="a">(a) शैशवावस्था</div>
+            <div class="option-item" data-ans="b">(b) बाल्यावस्था</div>
+            <div class="option-item" data-ans="c">(c) किशोरावस्था</div>
+            <div class="option-item" data-ans="d">(d) प्रौढ़ावस्था</div>
         </div>
 
-        <div class="card-panel">
+        <div class="card-panel" data-q="2">
             <div class="question-text">Q_2. बेरी-बेरी रोग किस विटामिन की कमी के कारण होता है?</div>
-            <div class="option-item">(a) विटामिन A</div>
-            <div class="option-item">(b) विटामिन B1 (थायमिन)</div>
-            <div class="option-item">(c) विटामिन C</div>
-            <div class="option-item">(d) विटामिन D</div>
+            <div class="option-item" data-ans="a">(a) विटामिन A</div>
+            <div class="option-item" data-ans="b">(b) विटामिन B1 (थायमिन)</div>
+            <div class="option-item" data-ans="c">(c) विटामिन C</div>
+            <div class="option-item" data-ans="d">(d) विटामिन D</div>
         </div>
 
-        <div class="card-panel">
+        <div class="card-panel" data-q="3">
             <div class="question-text">Q_3. वस्त्र निर्माण की सबसे छोटी इकाई को क्या कहते हैं?</div>
-            <div class="option-item">(a) धागा (Yarn)</div>
-            <div class="option-item">(b) रेशा (Fiber)</div>
-            <div class="option-item">(c) कपड़ा (Fabric)</div>
-            <div class="option-item">(d) सिलाई</div>
+            <div class="option-item" data-ans="a">(a) धागा (Yarn)</div>
+            <div class="option-item" data-ans="b">(b) रेशा (Fiber)</div>
+            <div class="option-item" data-ans="c">(c) कपड़ा (Fabric)</div>
+            <div class="option-item" data-ans="d">(d) सिलाई</div>
         </div>
 
-        <div class="card-panel">
+        <div class="card-panel" data-q="4">
             <div class="question-text">Q_4. दूध को सुरक्षित रखने के लिए पाश्चुरीकरण (Pasteurization) की प्रक्रिया में उसे कितने तापमान पर गर्म किया जाता है?</div>
-            <div class="option-item">(a) 100°C</div>
-            <div class="option-item">(b) 62.8°C (लगभग 30 मिनट के लिए)</div>
-            <div class="option-item">(c) 0°C</div>
-            <div class="option-item">(d) 200°C</div>
+            <div class="option-item" data-ans="a">(a) 100°C</div>
+            <div class="option-item" data-ans="b">(b) 62.8°C (लगभग 30 मिनट के लिए)</div>
+            <div class="option-item" data-ans="c">(c) 0°C</div>
+            <div class="option-item" data-ans="d">(d) 200°C</div>
         </div>
 
-        <div class="card-panel">
+        <div class="card-panel" data-q="5">
             <div class="question-text">Q_5. पारिवारिक बजट बनाने का मुख्य उद्देश्य क्या होता है?</div>
-            <div class="option-item">(a) खर्चों को बढ़ाना</div>
-            <div class="option-item">(b) आय और व्यय में संतुलन बनाकर बचत करना</div>
-            <div class="option-item">(c) कर्ज लेना</div>
-            <div class="option-item">(d) केवल मनोरंजन करना</div>
+            <div class="option-item" data-ans="a">(a) खर्चों को बढ़ाना</div>
+            <div class="option-item" data-ans="b">(b) आय और व्यय में संतुलन बनाकर बचत करना</div>
+            <div class="option-item" data-ans="c">(c) कर्ज लेना</div>
+            <div class="option-item" data-ans="d">(d) केवल मनोरंजन करना</div>
         </div>
 
+        <button class="btn btn-submit" onclick="submitTest()">✔️ टेस्ट सबमिट करें (Submit Test)</button>
         <a href="../index.html" class="btn">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
     </div>
 
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2>आपका परिणाम (Result)</h2>
+            <hr>
+            <div class="score-box" id="scoreText">0 / 5</div>
+            <p id="detailsText" style="font-size: 15px; color: #555;"></p>
+            <button class="btn" style="background-color: #dc3545; margin-top: 15px;" onclick="closeModal()">ठीक है (Close)</button>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = { 1: 'c', 2: 'b', 3: 'b', 4: 'b', 5: 'b' };
+        const userAnswers = {};
+
+        document.querySelectorAll('.card-panel').forEach(panel => {
+            const qId = panel.getAttribute('data-q');
+            const options = panel.querySelectorAll('.option-item');
+            options.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    options.forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    userAnswers[qId] = opt.getAttribute('data-ans');
+                });
+            });
+        });
+
+        function submitTest() {
+            let score = 0;
+            let totalQuestions = 5;
+            if(Object.keys(userAnswers).length < totalQuestions) {
+                alert("कृपया सभी प्रश्नों का उत्तर दें!");
+                return;
+            }
+            for (let q in correctAnswers) {
+                if (userAnswers[q] === correctAnswers[q]) { score++; }
+            }
+            document.getElementById('scoreText').innerText = `स्कोर: ${score} / ${totalQuestions}`;
+            document.getElementById('detailsText').innerText = `आपने ${totalQuestions} में से ${score} सही उत्तर दिए हैं।`;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('resultModal').style.display = 'none'; }
+    </script>
 </body>
 </html>
-
