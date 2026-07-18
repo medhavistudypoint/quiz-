@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medhavi Study Point - Study Notes Center</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; padding-bottom: 40px; 
+            /* टेक्स्ट सिलेक्ट करने से रोकने के लिए */
+            user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+        }
+        
+        .notes-header { background-color: #0b1e47; color: white; padding: 20px 5%; text-align: center; border-bottom: 4px solid #ffcc00; }
+        .notes-header h1 { margin: 0; font-size: 26px; color: #ffcc00; }
+        .notes-header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+
+        .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        
+        /* मुख्य दो सेक्शन के बड़े बटन */
+        .main-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        @media (max-width: 600px) { .main-sections { grid-template-columns: 1fr; } }
+        
+        .section-btn { background: white; padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; cursor: pointer; font-size: 20px; font-weight: 700; color: #0b1e47; transition: 0.2s; }
+        .section-btn:hover { border-color: #0b1e47; background-color: #f1f5f9; transform: translateY(-2px); }
+        .section-btn.active { background-color: #0b1e47; color: white; border-color: #0b1e47; }
+
+        /* डिस्प्ले एरिया */
+        .content-panel { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: none; }
+        .panel-title { font-size: 22px; font-weight: 700; color: #0b1e47; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #ffcc00; padding-bottom: 8px; }
+        
+        /* पीडीएफ/नोट्स लिस्ट डिज़ाइन */
+        .notes-list { display: flex; flex-direction: column; gap: 12px; }
+        .notes-card { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; }
+        .notes-info { display: flex; flex-direction: column; }
+        .notes-name { font-size: 15px; font-weight: 600; color: #1e293b; }
+        .notes-meta { font-size: 12px; color: #64748b; margin-top: 2px; }
+        
+        /* व्यू/पढ़ें बटन */
+        .btn-view { background-color: #0b1e47; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; transition: 0.2s; text-align: center; }
+        .btn-view:hover { background-color: #1e3a8a; }
+        .btn-soon { background-color: #e2e8f0; color: #94a3b8; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: not-allowed; text-align: center; }
+
+        /* सब्जेक्ट्स ग्रिड (GK/GS के लिए) */
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+        .subject-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 18px 10px; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; text-align: center; transition: 0.2s; cursor: pointer; }
+        .subject-card:hover { background: #ffcc00; color: #0b1e47; border-color: #ffcc00; transform: translateY(-2px); }
+        .subject-card.sub-active { background: #0b1e47; color: white; border-color: #0b1e47; }
+
+        /* सब-पैनल्स (डैश्ड बॉक्स) */
+        .sub-panel { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 25px; display: none; }
+
+        .btn-back { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .btn-back:hover { color: #0b1e47; }
+
+        /* 🖨️ प्रिंट कमांड (Ctrl+P) दबाने पर स्क्रीन गायब करने के लिए */
+        @media print {
+            body { display: none !important; }
+            html { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notes-header">
+        <h1>MEDHAVI STUDY POINT</h1>
+        <p>📚 विषयवार अध्ययन नोट्स एवं पीडीएफ केंद्र (सुरक्षित मोड) 📚</p>
+    </div>
+
+    <div class="container">
+        
+        <!-- दो मुख्य सेक्शन्स -->
+        <div class="main-sections">
+            <div class="section-btn" id="btnHomeScience" onclick="showSection('homescience')">📘 Home Science</div>
+            <div class="section-btn" id="btnGKGS" onclick="showSection('gkgs')">📕 GK / GS (सामान्य अध्ययन)</div>
+        </div>
+
+        <!-- 1. Home Science का पैनल -->
+        <div id="panelHomeScience" class="content-panel">
+            <div class="panel-title">Home Science - Available Notes</div>
+            <div class="notes-list">
+                <div class="notes-card">
+                    <div class="notes-info">
+                        <span class="notes-name">वस्त्र विज्ञान (Textile Science) - भाग 1</span>
+                        <span class="notes-meta">Format: PDF Notes</span>
+                    </div>
+                    <!-- भविष्य में फाइल का नाम यहाँ href में आएगा -->
+                    <a href="#" class="btn-view" onclick="alert('यह फाइल अभी अपलोड की जा रही है!')">खोलें / पढ़ें 📖</a>
+                </div>
+                <div class="notes-card">
+                    <div class="notes-info">
+                        <span class="notes-name">प्रसार शिक्षा (Extension Education) नोट्स</span>
+                        <span class="notes-meta">Format: Handwritten</span>
+                    </div>
+                    <span class="btn-soon">जल्द आ रहा है</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. GK/GS का पैनल -->
+        <div id="panelGKGS" class="content-panel">
+            <div class="panel-title">GK / GS - Select Subject</div>
+            
+            <!-- सब्जेक्ट्स की लिस्ट -->
+            <div class="subject-grid">
+                <div class="subject-card" id="subPolity" onclick="toggleSubject('polity')">🏛️ Polity</div>
+                <div class="subject-card" id="subHistory" onclick="toggleSubject('history')">📜 History</div>
+                <div class="subject-card" id="subGeography" onclick="toggleSubject('geography')">🌍 Geography</div>
+                <div class="subject-card" id="subEconomics" onclick="toggleSubject('economics')">💰 Economics</div>
+                <div class="subject-card" id="subScience" onclick="toggleSubject('science')">🔬 Science</div>
+                <div class="subject-card" id="subEnvironment" onclick="toggleSubject('environment')">🌱 Environment</div>
+                <div class="subject-card" id="subComputer" onclick="toggleSubject('computer')">💻 Computer</div>
+                <div class="subject-card" id="subUPSpecial" onclick="toggleSubject('upspecial')">🏹 UP Special</div>
+            </div>
+
+            <!-- ================= सब-पैनल्स (सारे सब्जेक्ट्स के नोट्स बॉक्स) ================= -->
+
+            <!-- 1. Polity Panel -->
+            <div id="panelPolity" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">🏛️ Polity - Study Notes:</div>
+                <div class="notes-list">
+                    <div class="notes-card">
+                        <div class="notes-info"><span class="notes-name">महत्वपूर्ण अनुच्छेद एवं अनुसूचियां सूची</span><span class="notes-meta">Format: PDF</span></div>
+                        <a href="#" class="btn-view" onclick="alert('यह फाइल अभी अपलोड की जा रही है!')">खोलें / पढ़ें 📖</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. History Panel -->
+            <div id="panelHistory" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">📜 History - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">आधुनिक भारत का इतिहास शार्ट नोट्स</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 3. Geography Panel -->
+            <div id="panelGeography" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">🌍 Geography - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">भारत एवं विश्व का भूगोल</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 4. Economics Panel -->
+            <div id="panelEconomics" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">💰 Economics - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">भारतीय अर्थव्यवस्था महत्वपूर्ण नोट्स</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 5. Science Panel -->
+            <div id="panelScience" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">🔬 Science - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">सामान्य विज्ञान (Biology/Physics) नोट्स</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 6. Environment Panel -->
+            <div id="panelEnvironment" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">🌱 Environment - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">पर्यावरण एवं पारिस्थितिकी नोट्स</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 7. Computer Panel -->
+            <div id="panelComputer" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">💻 Computer - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">कंप्यूटर सामान्य ज्ञान प्रश्नोत्तरी</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+            <!-- 8. UP Special Panel -->
+            <div id="panelUPSpecial" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px; font-size: 15px;">🏹 UP Special - Study Notes:</div>
+                <div class="notes-list"><div class="notes-card"><div class="notes-info"><span class="notes-name">उत्तर प्रदेश सामान्य ज्ञान विशेष तथ्य</span></div><span class="btn-soon">जल्द आ रहा है</span></div></div>
+            </div>
+
+        </div>
+
+        <a href="index.html" class="btn-back">🔙 मुख्य होमपेज पर वापस जाएं</a>
+    </div>
+
+    <script>
+        const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
+
+        function showSection(section) {
+            document.getElementById('btnHomeScience').classList.remove('active');
+            document.getElementById('btnGKGS').classList.remove('active');
+            document.getElementById('panelHomeScience').style.display = 'none';
+            document.getElementById('panelGKGS').style.display = 'none';
+            
+            hideAllSubPanels();
+            
+            if(section === 'homescience') {
+                document.getElementById('btnHomeScience').classList.add('active');
+                document.getElementById('panelHomeScience').style.display = 'block';
+            } else if(section === 'gkgs') {
+                document.getElementById('btnGKGS').classList.add('active');
+                document.getElementById('panelGKGS').style.display = 'block';
+            }
+        }
+
+        function toggleSubject(subjectTarget) {
+            const formattedName = subjectTarget.charAt(0).toUpperCase() + subjectTarget.slice(1);
+            const targetPanel = document.getElementById('panel' + formattedName);
+            const targetCard = document.getElementById('sub' + formattedName);
+            
+            if(targetPanel.style.display === 'block') {
+                targetPanel.style.display = 'none';
+                targetCard.classList.remove('sub-active');
+            } else {
+                hideAllSubPanels();
+                targetPanel.style.display = 'block';
+                targetCard.classList.add('sub-active');
+            }
+        }
+
+        function hideAllSubPanels() {
+            allSubjects.forEach(sub => {
+                const formatted = sub.charAt(0).toUpperCase() + sub.slice(1);
+                const p = document.getElementById('panel' + formatted);
+                const c = document.getElementById('sub' + formatted);
+                if(p) p.style.display = 'none';
+                if(c) c.classList.remove('sub-active');
+            });
+        }
+
+        // ================= 🛡️ सुरक्षा चक्र स्क्रिप्ट =================
+        // 1. राइट क्लिक रोकना
+        document.addEventListener('contextmenu', event => event.preventDefault()); 
+
+        // 2. स्क्रीनशॉट शॉर्टकट, प्रिंट (Ctrl+P) और सेव (Ctrl+S) ब्लॉक करना
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || e.keyCode == 44) { return false; }
+            if (e.ctrlKey && (e.keyCode === 80 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 85)) { 
+                alert("सुरक्षा कारणों से मेधावी स्टडी पॉइंट की सामग्री को कॉपी, प्रिंट या सेव नहीं किया जा सकता।");
+                return false; 
+            }
+        };
+    </script>
+</body>
+</html>
