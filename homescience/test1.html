@@ -5,22 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Science - Test 1</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; padding-bottom: 40px; }
-        .cbt-header { background-color: #0b1e47; color: white; padding: 15px; text-align: center; border-bottom: 3px solid #ffcc00; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; padding-bottom: 40px; position: relative; min-height: 100vh; }
+        
+        /* बैकग्राउंड वॉटरमार्क */
+        body::before {
+            content: "MEDHAVI STUDY POINT";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 40px;
+            font-weight: bold;
+            color: rgba(11, 30, 71, 0.04);
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cbt-header { background-color: #0b1e47; color: white; padding: 15px; text-align: center; border-bottom: 3px solid #ffcc00; position: sticky; top: 0; z-index: 10; }
         .cbt-header h1 { margin: 0; font-size: 20px; color: #ffcc00; }
+        
         .main-container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        
+        /* क्वेश्चन नंबर ग्रिड */
+        .nav-grid { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-dot { width: 35px; height: 35px; border-radius: 5px; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; border: 1px solid #cbd5e1; color: #64748b; }
+        .nav-dot.answered { background-color: #0b1e47; color: white; border-color: #0b1e47; }
+        
         .card-panel { background-color: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .question-text { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
         .option-item { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
         .option-item:hover { background-color: #f8fafc; border-color: #0b1e47; }
-        .option-item.selected { background-color: #e2e8f0; border-color: #0b1e47; font-weight: bold; color: #0b1e47; }
+        .option-item.selected { background-color: #cbd5e1; border-color: #0b1e47; font-weight: bold; color: #0b1e47; }
+        
+        /* राइट/रॉन्ग कलर सबमिट के बाद */
+        .option-item.correct-row { background-color: #d4edda !important; border-color: #28a745 !important; color: #155724 !important; font-weight: bold; }
+        .option-item.wrong-row { background-color: #f8d7da !important; border-color: #dc3545 !important; color: #721c24 !important; }
+
         .btn { display: block; width: 100%; padding: 14px; text-align: center; background-color: #0b1e47; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 16px; margin-bottom: 15px; }
         .btn-submit { background-color: #28a745; margin-top: 20px; }
         .btn-submit:hover { background-color: #218838; }
+        
+        /* रिजल्ट ग्रिड पॉप-अप */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 999; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .modal-content h2 { color: #0b1e47; margin-top: 0; }
-        .score-box { font-size: 24px; font-weight: bold; color: #28a745; margin: 15px 0; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-content h2 { color: #0b1e47; margin: 0 0 15px 0; }
+        
+        .report-grid { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+        .report-box { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; }
+        .bg-success { background-color: #28a745; box-shadow: 0 3px 6px rgba(40,167,69,0.3); }
+        .bg-danger { background-color: #dc3545; box-shadow: 0 3px 6px rgba(220,53,69,0.3); }
+        
+        .score-display { font-size: 22px; font-weight: bold; color: #0b1e47; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -31,6 +69,16 @@
     </div>
 
     <div class="main-container">
+        <!-- लाइव स्टेटस ग्रिड -->
+        <div class="nav-grid">
+            <div class="nav-dot" id="dot-1">1</div>
+            <div class="nav-dot" id="dot-2">2</div>
+            <div class="nav-dot" id="dot-3">3</div>
+            <div class="nav-dot" id="dot-4">4</div>
+            <div class="nav-dot" id="dot-5">5</div>
+        </div>
+
+        <!-- Q1 -->
         <div class="card-panel" data-q="1">
             <div class="question-text">Q_1. कार्बोहाइड्रेट का मुख्य स्रोत क्या है?</div>
             <div class="option-item" data-ans="a">(a) दाल</div>
@@ -39,6 +87,7 @@
             <div class="option-item" data-ans="d">(d) सन्तरा</div>
         </div>
 
+        <!-- Q2 -->
         <div class="card-panel" data-q="2">
             <div class="question-text">Q_2. वस्त्रों की रानी किसे कहा जाता है?</div>
             <div class="option-item" data-ans="a">(a) सूती</div>
@@ -47,6 +96,7 @@
             <div class="option-item" data-ans="d">(d) नायलॉन</div>
         </div>
 
+        <!-- Q3 -->
         <div class="card-panel" data-q="3">
             <div class="question-text">Q_3. मुख्य रूप से प्रसार शिक्षा (Extension Education) का उद्देश्य क्या होता है?</div>
             <div class="option-item" data-ans="a">(a) शहरी विकास</div>
@@ -55,14 +105,16 @@
             <div class="option-item" data-ans="d">(d) इनमें से कोई नहीं</div>
         </div>
 
+        <!-- Q4 -->
         <div class="card-panel" data-q="4">
-            <div class="question-text">Q_4. मानव शरीर में protein का मुख्य कार्य क्या है?</div>
+            <div class="question-text">Q_4. मानव शरीर में प्रोटीन का मुख्य कार्य क्या है?</div>
             <div class="option-item" data-ans="a">(a) केवल ऊर्जा देना</div>
             <div class="option-item" data-ans="b">(b) ऊतकों का निर्माण और मरम्मत</div>
             <div class="option-item" data-ans="c">(c) हड्डियों को कमजोर करना</div>
             <div class="option-item" data-ans="d">(d) इनमें से कोई नहीं</div>
         </div>
 
+        <!-- Q5 -->
         <div class="card-panel" data-q="5">
             <div class="question-text">Q_5. उपभोक्ता संरक्षण अधिनियम (Consumer Protection Act) भारत में पहली बार किस वर्ष लागू किया गया था?</div>
             <div class="option-item" data-ans="a">(a) 1986</div>
@@ -71,51 +123,106 @@
             <div class="option-item" data-ans="d">(d) 2019</div>
         </div>
 
-        <button class="btn btn-submit" onclick="submitTest()">✔️ टेस्ट सबमिट करें (Submit Test)</button>
-        <a href="../index.html" class="btn">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
+        <button class="btn btn-submit" id="submitBtn" onclick="submitTest()">✔️ टेस्ट सबमिट करें (Submit Test)</button>
+        <a href="../index.html" class="btn">🔙 बिना सबमिट किए बाहर जाएं</a>
     </div>
 
+    <!-- 5 ग्रिड रिपोर्ट कार्ड पॉप-अप -->
     <div class="modal" id="resultModal">
         <div class="modal-content">
-            <h2>आपका परिणाम (Result)</h2>
-            <hr>
-            <div class="score-box" id="scoreText">0 / 5</div>
-            <p id="detailsText" style="font-size: 15px; color: #555;"></p>
-            <button class="btn" style="background-color: #dc3545; margin-top: 15px;" onclick="closeModal()">ठीक है (Close)</button>
+            <h2>🎯 फाइनल स्कोरकार्ड</h2>
+            <div class="score-display" id="scoreText">स्कोर: 0 / 5</div>
+            <p style="font-size: 14px; color: #666; margin: 0;">प्रश्नों की स्थिति (Report Grid):</p>
+            
+            <!-- 5 ग्रिड डिब्बे -->
+            <div class="report-grid" id="reportGridBox">
+                <div class="report-box" id="r-1">1</div>
+                <div class="report-box" id="r-2">2</div>
+                <div class="report-box" id="r-3">3</div>
+                <div class="report-box" id="r-4">4</div>
+                <div class="report-box" id="r-5">5</div>
+            </div>
+            
+            <p style="font-size: 13px; color: #ef4444; font-weight: bold; margin-bottom: 15px;">⚠️ क्लोज करते ही आप मुख्य मेनू पर चले जाएंगे।</p>
+            <button class="btn" style="background-color: #0b1e47; margin: 0;" onclick="closeAndExit()">ठीक है (Close & Exit)</button>
         </div>
     </div>
 
     <script>
         const correctAnswers = { 1: 'b', 2: 'b', 3: 'b', 4: 'b', 5: 'a' };
         const userAnswers = {};
+        let isSubmitted = false;
 
+        // ऑप्शन सिलेक्शन और ग्रिड अपडेट
         document.querySelectorAll('.card-panel').forEach(panel => {
             const qId = panel.getAttribute('data-q');
             const options = panel.querySelectorAll('.option-item');
+            
             options.forEach(opt => {
                 opt.addEventListener('click', () => {
+                    if (isSubmitted) return; // सबमिट के बाद लॉक
+                    
                     options.forEach(o => o.classList.remove('selected'));
                     opt.classList.add('selected');
                     userAnswers[qId] = opt.getAttribute('data-ans');
+                    
+                    // ऊपर वाले नंबर ग्रिड को एक्टिव करना
+                    document.getElementById(`dot-${qId}`).classList.add('answered');
                 });
             });
         });
 
+        // टेस्ट सबमिशन
         function submitTest() {
             let score = 0;
             let totalQuestions = 5;
-            if(Object.keys(userAnswers).length < totalQuestions) {
-                alert("कृपया सभी प्रश्नों का उत्तर दें!");
+            let answeredCount = Object.keys(userAnswers).length;
+
+            if(answeredCount < totalQuestions) {
+                alert("कृपया टेस्ट सबमिट करने से पहले सभी 5 प्रश्नों के उत्तर दें!");
                 return;
             }
+
+            isSubmitted = true;
+            document.getElementById('submitBtn').style.display = 'none';
+
+            // जांच और ग्रिड/कलर का बदलाव
             for (let q in correctAnswers) {
-                if (userAnswers[q] === correctAnswers[q]) { score++; }
+                const panel = document.querySelector(`.card-panel[data-q="${q}"]`);
+                const options = panel.querySelectorAll('.option-item');
+                const userAns = userAnswers[q];
+                const correctAns = correctAnswers[q];
+
+                // रिपोर्ट कार्ड ग्रिड का रंग तय करना
+                if (userAns === correctAns) {
+                    score++;
+                    document.getElementById(`r-${q}`).classList.add('bg-success');
+                } else {
+                    document.getElementById(`r-${q}`).classList.add('bg-danger');
+                }
+
+                // प्रश्नों के सही/गलत उत्तरों का रंग बदलना
+                options.forEach(opt => {
+                    const optAns = opt.getAttribute('data-ans');
+                    if (optAns === correctAns) {
+                        opt.classList.add('correct-row'); // सही उत्तर हरा
+                    } else if (optAns === userAns && userAns !== correctAns) {
+                        opt.classList.add('wrong-row'); // गलत उत्तर लाल
+                    }
+                    opt.classList.remove('selected');
+                });
             }
+
+            // स्कोर दिखाना
             document.getElementById('scoreText').innerText = `स्कोर: ${score} / ${totalQuestions}`;
-            document.getElementById('detailsText').innerText = `आपने ${totalQuestions} में से ${score} सही उत्तर दिए हैं।`;
             document.getElementById('resultModal').style.display = 'flex';
         }
-        function closeModal() { document.getElementById('resultModal').style.display = 'none'; }
+
+        // क्लोज करने पर सीधे मुख्य डैशबोर्ड पर रीडायरेक्ट करना
+        function closeAndExit() {
+            document.getElementById('resultModal').style.display = 'none';
+            window.location.href = "../index.html"; // ऑटोमैटिक मेनू पर वापस भेजना
+        }
     </script>
 </body>
 </html>
