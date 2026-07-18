@@ -3,124 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medhavi Study Point - Test</title>
+    <title>Medhavi Study Point - Test Dashboard</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0; padding: 0;
-            background-color: #f0f4f8; color: #333;
-            user-select: none; -webkit-user-select: none;
-        }
-        .watermark-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9999;
-            display: flex; flex-wrap: wrap; justify-content: space-around;
-            align-content: space-around; overflow: hidden; opacity: 0.04; 
-        }
-        .watermark-text { font-size: 22px; font-weight: bold; color: #0b1e47; transform: rotate(-30deg); padding: 45px; white-space: nowrap; }
-        .cbt-header { background-color: #0b1e47; color: white; padding: 15px; text-align: center; border-bottom: 3px solid #ffcc00; }
-        .cbt-header h1 { margin: 0; font-size: 22px; color: #ffcc00; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; }
+        .cbt-header { background-color: #0b1e47; color: white; padding: 20px; text-align: center; border-bottom: 3px solid #ffcc00; }
+        .cbt-header h1 { margin: 0; font-size: 24px; color: #ffcc00; }
         .main-container { max-width: 600px; margin: 25px auto; padding: 0 15px; }
-        .card-panel { background-color: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .question-text { font-size: 16px; font-weight: 600; line-height: 1.6; margin-bottom: 15px; white-space: pre-line; }
-        .option-item { display: flex; align-items: center; padding: 12px; margin-bottom: 8px; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; background-color: #fff; }
-        .option-item.selected { background-color: #fffde6; border-color: #d97706; }
-        .option-circle { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 2px solid #94a3b8; border-radius: 50%; font-weight: bold; margin-right: 12px; flex-shrink: 0; font-size: 12px; }
-        .option-item.selected .option-circle { border-color: #d97706; background-color: #d97706; color: white; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .btn { padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #cbd5e1; background-color: white; }
-        .btn-next { background-color: #0b1e47; color: white; border: none; }
-        .btn-submit { width: 100%; background-color: #ea580c; color: white; font-weight: bold; padding: 12px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; margin-top: 10px; }
-        .report-view { display: none; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
-        .score { font-size: 24px; font-weight: bold; color: #16a34a; margin: 15px 0; }
+        .section-title { font-size: 18px; font-weight: bold; color: #0b1e47; margin: 20px 0 10px 0; border-bottom: 2px solid #0b1e47; padding-bottom: 5px; }
+        .card-panel { background-color: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .quiz-info { font-size: 15px; font-weight: 600; }
+        .btn-link { background-color: #ea580c; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div id="wmArea" class="watermark-overlay"></div>
-
-    <div id="quizArea">
-        <div class="cbt-header">
-            <h1>MEDHAVI STUDY POINT</h1>
-            <p style="margin:5px 0 0 0; font-size:12px;">5 प्रश्न - टेस्टिंग मोड</p>
-        </div>
-
-        <div class="main-container">
-            <div class="card-panel">
-                <div style="font-size:12px; font-weight:bold; margin-bottom:10px; color:#666;">प्रश्न: <span id="lblCurrent">1</span> / 5</div>
-                <div id="boxQuestion" class="question-text"></div>
-                <div id="boxOptions"></div>
-                
-                <div class="btn-grid">
-                    <button class="btn" onclick="goPrev()">◀ पिछला</button>
-                    <button class="btn btn-next" onclick="goNext()">अगला ▶</button>
-                </div>
-            </div>
-            <button class="btn-submit" onclick="submitQuiz()">टेस्ट सबमिट करें</button>
-        </div>
+    <div class="cbt-header">
+        <h1>MEDHAVI STUDY POINT</h1>
+        <p style="margin:5px 0 0 0; font-size:14px;">ऑनलाइन टेस्ट सीरीज (Testing Mode)</p>
     </div>
 
-    <div class="main-container" id="reportArea">
-        <div class="report-view">
-            <h2>रिजल्ट कार्ड</h2>
-            <div class="score">सही उत्तर: <span id="txtCorrect">0</span> / 5</div>
-            <button class="btn" onclick="location.reload()">दोबारा टेस्ट दें</button>
+    <div class="main-container">
+        
+        <!-- होम साइंस सेक्शन -->
+        <div class="section-title">📘 गृह विज्ञान (Home Science)</div>
+        
+        <div class="card-panel">
+            <div class="quiz-info">📝 होम साइंस - टेस्ट 1</div>
+            <a href="homescience/test1.html" class="btn-link">शुरू करें</a>
         </div>
+        <div class="card-panel">
+            <div class="quiz-info">📝 होम साइंस - टेस्ट 2</div>
+            <a href="homescience/test2.html" class="btn-link">शुरू करें</a>
+        </div>
+        <div class="card-panel">
+            <div class="quiz-info">📝 होम साइंस - टेस्ट 3</div>
+            <a href="homescience/test3.html" class="btn-link">शुरू करें</a>
+        </div>
+
+        <!-- राजव्यवस्था सेक्शन -->
+        <div class="section-title">📕 राजव्यवस्था (Indian Polity)</div>
+        
+        <div class="card-panel">
+            <div class="quiz-info">📝 राजव्यवस्था - टेस्ट 1</div>
+            <a href="polity/test1.html" class="btn-link">शुरू करें</a>
+        </div>
+        <div class="card-panel">
+            <div class="quiz-info">📝 राजव्यवस्था - टेस्ट 2</div>
+            <a href="polity/test2.html" class="btn-link">शुरू करें</a>
+        </div>
+        <div class="card-panel">
+            <div class="quiz-info">📝 राजव्यवस्था - टेस्ट 3</div>
+            <a href="polity/test3.html" class="btn-link">शुरू करें</a>
+        </div>
+
     </div>
 
-    <script>
-        const quizData = [
-            { q: "Q_1. कार्बोहाइड्रेट का स्रोत है-", opts: ["(a) दाल", "(b) चीनी", "(c) दूध", "(d) सन्तरा"], ans: 1 },
-            { q: "Q_2. रक्त की शुद्धि किस अंग से होती है ?", opts: ["(a) हृदय", "(b) त्वचा", "(c) वृक्क", "(d) फेफड़ा"], ans: 2 },
-            { q: "Q_3. मच्छरों द्वारा कौन-सा रोग फैलता है ?", opts: ["(a) हैजा", "(b) तपेदिक", "(c) डायरिया", "(d) डेंगू"], ans: 3 },
-            { q: "Q_4. मांसपेशियों की मजबूती किस तत्व के कारण होती है?", opts: ["(a) लौह तत्व", "(b) प्रोटीन", "(c) सोडियम", "(d) कार्बोहाइड्रेट"], ans: 1 },
-            { q: "Q_5. मानव शरीर में फेफड़ों की संख्या होती है-", opts: ["(a) एक", "(b) दो", "(c) चार", "(d) पाँच"], ans: 1 }
-        ];
-
-        let currentIdx = 0;
-        const userAnswers = new Array(quizData.length).fill(null);
-
-        // Watermark Setup
-        const wmArea = document.getElementById("wmArea");
-        for (let i = 0; i < 15; i++) {
-            const wm = document.createElement("div");
-            wm.className = "watermark-text";
-            wm.innerText = "MEDHAVI STUDY POINT";
-            wmArea.appendChild(wm);
-        }
-
-        function loadQuestion(idx) {
-            currentIdx = idx;
-            document.getElementById("lblCurrent").innerText = idx + 1;
-            const item = quizData[idx];
-            document.getElementById("boxQuestion").innerText = item.q;
-            
-            const optionsBox = document.getElementById("boxOptions");
-            optionsBox.innerHTML = "";
-            
-            item.opts.forEach((opt, oIdx) => {
-                const div = document.createElement("div");
-                div.className = "option-item";
-                if (userAnswers[idx] === oIdx) div.classList.add("selected");
-                div.innerHTML = `<div class="option-circle">${String.fromCharCode(65 + oIdx)}</div><div>${opt}</div>`;
-                div.onclick = () => { userAnswers[currentIdx] = oIdx; loadQuestion(currentIdx); };
-                optionsBox.appendChild(div);
-            });
-        }
-
-        function goPrev() { if (currentIdx > 0) loadQuestion(currentIdx - 1); }
-        function goNext() { if (currentIdx < quizData.length - 1) loadQuestion(currentIdx + 1); }
-
-        function submitQuiz() {
-            let correctCount = 0;
-            quizData.forEach((item, idx) => { if (userAnswers[idx] === item.ans) correctCount++; });
-            document.getElementById("quizArea").style.display = "none";
-            document.getElementById("reportArea").querySelector(".report-view").style.display = "block";
-            document.getElementById("txtCorrect").innerText = correctCount;
-        }
-
-        loadQuestion(0);
-    </script>
 </body>
 </html>
