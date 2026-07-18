@@ -3,119 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Polity - Test 1</title>
+    <title>Medhavi Study Point - Polity Test 1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #f0f4f8; color: #333; padding-bottom: 40px; }
-        .cbt-header { background-color: #0b1e47; color: white; padding: 15px; text-align: center; border-bottom: 3px solid #ffcc00; }
-        .cbt-header h1 { margin: 0; font-size: 20px; color: #ffcc00; }
-        .main-container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
-        .card-panel { background-color: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .question-text { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
-        .option-item { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
-        .option-item:hover { background-color: #f8fafc; border-color: #0b1e47; }
-        .option-item.selected { background-color: #e2e8f0; border-color: #0b1e47; font-weight: bold; color: #0b1e47; }
-        .btn { display: block; width: 100%; padding: 14px; text-align: center; background-color: #0b1e47; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 16px; margin-bottom: 15px; }
-        .btn-submit { background-color: #28a745; margin-top: 20px; }
-        .btn-submit:hover { background-color: #218838; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 999; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 85%; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .modal-content h2 { color: #0b1e47; margin-top: 0; }
-        .score-box { font-size: 24px; font-weight: bold; color: #28a745; margin: 15px 0; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Arial Unicode MS';
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            position: relative;
+        }
+        
+        /* SECURITY LAYER: स्क्रीन पर तैरने वाला सुरक्षा वॉटरमार्क */
+        .watermark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            overflow: hidden;
+            opacity: 0.06;
+        }
+        .watermark-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0b1e47;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+            padding: 40px;
+        }
+        
+        /* Top Banner Header */
+        .cbt-header {
+            background-color: #0b1e47;
+            color: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 3px solid #ffcc00;
+            position: relative;
+            z-index: 10;
+        }
+        .header-left h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 850;
+            color: #ffcc00;
+            letter-spacing: 0.8px;
+        }
+        .header-left p {
+            margin: 5px 0 0 0;
+            font-size: 15px;
+            color: #e2e8f5;
+            font-weight: 600;
+        }
+        .timer-box {
+            background: linear-gradient(135deg, #1e3a8a, #0b1e47);
+            border: 2px solid #3b82f6;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 20px;
+            color: #ffcc00;
+        }
+
+        /* Layout Container */
+        .main-container {
+            max-width: 780px;
+            margin: 25px auto;
+            padding: 0 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-panel {
+            background-color: white;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 25px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+        .q-badge {
+            background-color: #0b1e47;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .subject-badge {
+            background-color: #eff6ff;
+            color: #1e40af;
+            padding: 5px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #bfdbfe;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.65;
+            margin-bottom: 22px;
+            color: #0f172a;
+            white-space: pre-line;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+        .option-item:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+        }
+        .option-item.selected {
+            background-color: #fffde6;
+            border-color: #d97706;
+            box-shadow: 0 0 6px rgba(217, 119, 6, 0.18);
+        }
+        .option-circle {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #94a3b8;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 14px;
+            color: #475569;
+            margin-right: 18px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .option-item.selected .option-circle {
+            border-color: #d97706;
+            background-color: #d97706;
+            color: white;
+        }
+        .option-label {
+            font-size: 16px;
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .btn-tri-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .btn {
+            padding: 13px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .btn-prev { background-color: #ffffff; color: #1e293b; border-color: #cbd5e1; }
+        .btn-prev:hover { background-color: #f1f5f9; }
+        .btn-clear { background-color: #fef2f2; color: #ef4444; border-color: #fee2e2; }
+        .btn-clear:hover { background-color: #ef4444; color: white; }
+        .btn-mark { background-color: #faf5ff; color: #7c3aed; border-color: #f3e8ff; }
+        .btn-mark:hover { background-color: #7c3aed; color: white; }
+
+        .btn-main-action {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #0b1e47;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-main-action:hover { background-color: #162e65; }
+        .btn-main-action.submit-state { background-color: #16a34a; }
+
+        .palette-heading { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #0f172a; }
+        .grid-matrix {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .palette-cell {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .pal-unvisited { background-color: #ffffff; border: 1px solid #cbd5e1; color: #64748b; }
+        .pal-visited { background-color: #ffffff; border: 2px solid #ef4444; color: #ef4444; }
+        .pal-answered { background-color: #16a34a; border: 1px solid #16a34a; color: white; }
+        .pal-marked { background-color: #7c3aed; border: 1px solid #7c3aed; color: white; }
+
+        .legend-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            font-size: 13px;
+            color: #475569;
+        }
+        .legend-item { display: flex; align-items: center; }
+        .legend-indicator { width: 14px; height: 14px; border-radius: 4px; margin-right: 8px; }
+
+        .btn-submit-trigger {
+            width: 100%;
+            background-color: #ea580c;
+            color: white;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(234,88,12,0.3);
+        }
+
+        /* 5-GRID REPORT DASHBOARD UI */
+        .report-view {
+            display: none;
+            max-width: 900px;
+            margin: 35px auto;
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            z-index: 10;
+        }
+        .report-header-title { text-align: center; color: #0b1e47; margin-bottom: 5px; font-size: 24px; font-weight: 800; }
+        .report-subtitle { text-align: center; color: #475569; font-size: 14px; margin-bottom: 30px; }
+        
+        .grid-5-columns {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 25px -10px;
+        }
+        .metric-card-wrapper {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px;
+        }
+        .metric-card {
+            padding: 24px 15px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            height: 100%;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border-bottom: 4px solid rgba(0,0,0,0.25);
+        }
+        .m-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .m-green { background: linear-gradient(135deg, #10b981, #047857); }
+        .m-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .m-orange { background: linear-gradient(135deg, #f97316, #c2410c); }
+        .m-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        
+        .metric-val { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+        .metric-title { font-size: 11px; opacity: 0.95; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+        .metric-desc { font-size: 11px; opacity: 0.8; margin-top: 4px; }
+
+        .btn-telegram-share {
+            width: 100%;
+            background: linear-gradient(135deg, #2ae, #0088cc);
+            color: white;
+            font-weight: bold;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.35);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .btn-dashboard-redirect {
+            width: 100%;
+            background-color: #475569;
+            color: white;
+            font-weight: bold;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .review-title { font-size: 20px; font-weight: 700; color: #0b1e47; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
+        .review-card-item { padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #94a3b8; }
+        .review-card-item.correct-left { border-left-color: #10b981; background-color: #f0fdf4; }
+        .review-card-item.incorrect-left { border-left-color: #ef4444; background-color: #fef2f2; }
+        .review-card-item.skipped-left { border-left-color: #f97316; background-color: #fff7ed; }
+        .review-question-row { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1e293b; }
+        .review-status-mark { font-weight: bold; margin-right: 6px; font-size: 18px; }
+        .status-correct { color: #10b981; } .status-incorrect { color: #ef4444; } .status-skipped { color: #f97316; }
+        .review-data-line { margin: 6px 0; font-size: 14px; color: #475569; }
+        .review-data-line b { color: #0f172a; }
     </style>
 </head>
 <body>
 
-    <div class="cbt-header">
-        <h1>MEDHAVI STUDY POINT</h1>
-        <p style="margin:5px 0 0 0; font-size:13px;">भारतीय राजव्यवस्था (Polity) - टेस्ट 1</p>
+    <div class="watermark-overlay">
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
     </div>
 
-    <div class="main-container">
-        <div class="card-panel" data-q="1">
-            <div class="question-text">Q_1. भारतीय संविधान का जनक किसे माना जाता है?</div>
-            <div class="option-item" data-ans="a">(a) डॉ. राजेन्द्र担当 प्रसाद</div>
-            <div class="option-item" data-ans="b">(b) जवाहरलाल नेहरू</div>
-            <div class="option-item" data-ans="c">(c) डॉ. बी. आर. अम्बेडकर</div>
-            <div class="option-item" data-ans="d">(d) सरदार वल्लभभाई पटेल</div>
+    <div id="quizWorkspace">
+        <div class="cbt-header">
+            <div class="header-left">
+                <h1>MEDHAVI STUDY POINT</h1>
+                <p>UPSC / UPPSC - Indian Polity Test 1</p>
+            </div>
+            <div class="timer-box" id="countdownTimer">05:00</div>
         </div>
 
-        <div class="card-panel" data-q="2">
-            <div class="question-text">Q_2. संविधान के किस भाग में मौलिक अधिकारों (Fundamental Rights) का वर्णन है?</div>
-            <div class="option-item" data-ans="a">(a) भाग I</div>
-            <div class="option-item" data-ans="b">(b) भाग II</div>
-            <div class="option-item" data-ans="c">(c) भाग III</div>
-            <div class="option-item" data-ans="d">(d) भाग IV</div>
-        </div>
+        <div class="main-container">
+            <div class="card-panel">
+                <div class="meta-row">
+                    <span class="q-badge">प्रश्न: <span id="lblCurrentNum">1</span> / <span id="lblTotalNum">5</span></span>
+                    <span class="subject-badge">भारतीय राजव्यवस्था (Polity)</span>
+                </div>
+                <div id="boxQuestionText" class="question-text"></div>
+                <div id="boxOptionsList"></div>
+                
+                <div class="btn-tri-grid">
+                    <button class="btn btn-prev" onclick="doNavigatePrev()">◀ पिछला</button>
+                    <button class="btn btn-clear" onclick="doClearAnswer()">Clear</button>
+                    <button class="btn btn-mark" onclick="doToggleMark()">⭐ Mark</button>
+                </div>
+                <button id="btnMainNav" class="btn-main-action" onclick="handleMainAction()">अगला ▶</button>
+            </div>
 
-        <div class="card-panel" data-q="3">
-            <div class="question-text">Q_3. भारत के राष्ट्रपति को पद की शपथ कौन दिलाता है?</div>
-            <div class="option-item" data-ans="a">(a) भारत के मुख्य न्यायाधीश (CJI)</div>
-            <div class="option-item" data-ans="b">(b) प्रधानमंत्री</div>
-            <div class="option-item" data-ans="c">(c) उपराष्ट्रपति</div>
-            <div class="option-item" data-ans="d">(d) लोकसभा अध्यक्ष</div>
+            <div class="card-panel">
+                <div class="palette-heading">प्रश्न पैलेट ग्रिड</div>
+                <div id="boxPaletteGrid" class="grid-matrix"></div>
+                
+                <div class="legend-box">
+                    <div class="legend-item"><div class="legend-indicator" style="background-color:#16a34a;"></div>उत्तरित</div>
+                    <div class="legend-item"><div class="legend-indicator" style="border:2px solid #ef4444; background: white;"></div>बिना उत्तर</div>
+                    <div class="legend-item"><div class="legend-indicator" style="background-color:#7c3aed;"></div>Marked</div>
+                    <div class="legend-item"><div class="legend-indicator" style="border:1px solid #cbd5e1; background: white;"></div>नहीं देखा</div>
+                </div>
+                
+                <button class="btn-submit-trigger" onclick="triggerTestSubmission()">✔ Submit Test Demo</button>
+            </div>
         </div>
-
-        <div class="card-panel" data-q="4">
-            <div class="question-text">Q_4. भारतीय संविधान की प्रस्तावना में 'धर्मनिरपेक्ष' शब्द किस संशोधन द्वारा जोड़ा गया?</div>
-            <div class="option-item" data-ans="a">(a) 44वां संशोधन</div>
-            <div class="option-item" data-ans="b">(b) 42वां संशोधन</div>
-            <div class="option-item" data-ans="c">(c) 24वां संशोधन</div>
-            <div class="option-item" data-ans="d">(d) 86वां संशोधन</div>
-        </div>
-
-        <div class="card-panel" data-q="5">
-            <div class="question-text">Q_5. लोक सभा का सदस्य बनने के लिए न्यूनतम आयु कितनी होनी चाहिए?</div>
-            <div class="option-item" data-ans="a">(a) 18 वर्ष</div>
-            <div class="option-item" data-ans="b">(b) 21 वर्ष</div>
-            <div class="option-item" data-ans="c">(c) 25 वर्ष</div>
-            <div class="option-item" data-ans="d">(d) 30 वर्ष</div>
-        </div>
-
-        <button class="btn btn-submit" onclick="submitTest()">✔️ टेस्ट सबमिट करें (Submit Test)</button>
-        <a href="../index.html" class="btn">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
     </div>
 
-    <div class="modal" id="resultModal">
-        <div class="modal-content">
-            <h2>आपका परिणाम (Result)</h2>
-            <hr>
-            <div class="score-box" id="scoreText">0 / 5</div>
-            <p id="detailsText" style="font-size: 15px; color: #555;"></p>
-            <button class="btn" style="background-color: #dc3545; margin-top: 15px;" onclick="closeModal()">ठीक है (Close)</button>
+    <div id="boxReportDashboard" class="report-view">
+        <div id="captureTarget" style="padding: 15px; background: white; border-radius: 12px;">
+            <div class="report-header-title">Medhavi Study Point — Result Dashboard</div>
+            <div class="report-subtitle">UPSC / UPPSC - Indian Polity Test मॉक परीक्षा डेटा रिपोर्ट कार्ड</div>
+            
+            <div class="grid-5-columns">
+                <div class="metric-card-wrapper">
+                    <div class="metric-card m-blue">
+                        <div id="valNetScore" class="metric-val">0 / 5</div>
+                        <div class="metric-title">Total Score</div>
+                        <div class="metric-desc">कुल प्राप्तांक</div>
+                    </div>
+                </div>
+                <div class="metric-card-wrapper">
+                    <div class="metric-card m-green">
+                        <div id="valCorrectCount" class="metric-val">0</div>
+                        <div class="metric-title">Correct</div>
+                        <div class="metric-desc">सही उत्तर</div>
+                    </div>
+                </div>
+                <div class="metric-card-wrapper">
+                    <div class="metric-card m-red">
+                        <div id="valIncorrectCount" class="metric-val">0</div>
+                        <div class="metric-title">Incorrect</div>
+                        <div class="metric-desc">गलत उत्तर</div>
+                    </div>
+                </div>
+                <div class="metric-card-wrapper">
+                    <div class="metric-card m-orange">
+                        <div id="valSkippedCount" class="metric-val">0</div>
+                        <div class="metric-title">Skipped</div>
+                        <div class="metric-desc">छोड़े गए प्रश्न</div>
+                    </div>
+                </div>
+                <div class="metric-card-wrapper">
+                    <div class="metric-card m-purple">
+                        <div id="valTimeConsumed" class="metric-val">00:00</div>
+                        <div class="metric-title">Time Used</div>
+                        <div class="metric-desc">लिया गया समय</div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <button class="btn-telegram-share" onclick="captureCardAndOpenGroup()">📸 रिजल्ट इमेज कॉपी करें और ग्रुप में भेजें</button>
+        <a href="../index.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
+
+        <div class="review-title">🔍 उत्तरों की विस्तृत समीक्षा (Review Answers)</div>
+        <div id="boxReviewAnswersList"></div>
     </div>
 
     <script>
-        const correctAnswers = { 1: 'c', 2: 'c', 3: 'a', 4: 'b', 5: 'c' };
-        const userAnswers = {};
+        document.addEventListener('contextmenu', event => event.preventDefault()); 
+        
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || e.keyCode == 44) { return false; }
+            if (e.ctrlKey && (e.keyCode === 83 || e.keyCode === 80 || e.keyCode === 67 || e.keyCode === 85)) { return false; }
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { return false; }
+        };
 
-        document.querySelectorAll('.card-panel').forEach(panel => {
-            const qId = panel.getAttribute('data-q');
-            const options = panel.querySelectorAll('.option-item');
-            options.forEach(opt => {
-                opt.addEventListener('click', () => {
-                    options.forEach(o => o.classList.remove('selected'));
-                    opt.classList.add('selected');
-                    userAnswers[qId] = opt.getAttribute('data-ans');
-                });
-            });
-        });
+        const dataset = [
+            { id: 1, question: "Q_1. भारतीय संविधान का जनक किसे माना जाता है?", options: ["डॉ. राजेन्द्र प्रसाद", "जवाहरलाल नेहरू", "डॉ. बी. आर. अम्बेडकर", "सरदार वल्लभभाई पटेल"], correct: 2 },
+            { id: 2, question: "Q_2. संविधान के किस भाग में मौलिक अधिकारों (Fundamental Rights) का वर्णन है?", options: ["भाग I", "भाग II", "भाग III", "भाग IV"], correct: 2 },
+            { id: 3, question: "Q_3. भारत के राष्ट्रपति को पद की शपथ कौन दिलाता है?", options: ["भारत के मुख्य न्यायाधीश (CJI)", "प्रधानमंत्री", "उपराष्ट्रपति", "लोकसभा अध्यक्ष"], correct: 0 },
+            { id: 4, question: "Q_4. भारतीय संविधान की प्रस्तावना में 'धर्मनिरपेक्ष' शब्द किस संशोधन द्वारा जोड़ा गया?", options: ["44वां संशोधन", "42वां संशोधन", "24वां संशोधन", "86वां संशोधन"], correct: 1 },
+            { id: 5, question: "Q_5. लोक सभा का सदस्य बनने के लिए न्यूनतम आयु कितनी होनी चाहिए?", options: ["18 वर्ष", "21 वर्ष", "25 वर्ष", "30 वर्ष"], correct: 2 }
+        ];
 
-        function submitTest() {
-            let score = 0;
-            let totalQuestions = 5;
-            if(Object.keys(userAnswers).length < totalQuestions) {
-                alert("कृपया सभी प्रश्नों का उत्तर दें!");
-                return;
-            }
-            for (let q in correctAnswers) {
-                if (userAnswers[q] === correctAnswers[q]) { score++; }
-            }
-            document.getElementById('scoreText').innerText = `स्कोर: ${score} / ${totalQuestions}`;
-            document.getElementById('detailsText').innerText = `आपने ${totalQuestions} में से ${score} सही उत्तर दिए हैं।`;
-            document.getElementById('resultModal').style.display = 'flex';
-        }
-        function closeModal() { document.getElementById('resultModal').style.display = 'none'; }
-    </script>
-</body>
-</html>
+        let activeIndex = 0;
+        const totalDurationSec = 5 * 60; 
+        let timeRemainingSec = totalDurationSec;
+        let countdownTimerId = null;
+        
+        const userResponses = new Array(dataset.length).fill(null);
+        const markedMatrix = new Array(dataset.length).fill(false);
+
+        window.onload = function() {
+            document.getElementById('lblTotalNum').innerText = dataset.length;
+            userResponses[0] = -1; 
+            buildPaletteGrid();
+            displayQuestionCard(0);
+            initiateCountdown();
+        };
+
+        function initiateCountdown() {
+            countdownTimerId = setInterval(() => {
+                if (timeRemainingSec <= 0) {
+                    clearInterval(countdownTimerId);
+                    forceAutomaticSubmission();
+                } else {
+                 
