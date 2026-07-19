@@ -33,6 +33,13 @@
 
         .main-container { max-width: 780px; margin: 25px auto; padding: 0 15px; position: relative; z-index: 10; }
         .card-panel { background-color: white; border-radius: 14px; padding: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; margin-bottom: 25px; }
+        
+        /* लॉगिन कार्ड का स्टाइल */
+        .login-card { background-color: white; border-radius: 14px; padding: 35px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; margin: 50px auto; text-align: center; max-width: 500px; }
+        .login-card h2 { color: #0b1e47; margin-top: 0; }
+        .login-card input[type="text"] { width: 100%; padding: 12px 15px; margin: 20px 0; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; text-align: center; }
+        .login-card input[type="text"]:focus { border-color: #0b1e47; outline: none; }
+
         .meta-row { display: flex; justify-content: space-between; margin-bottom: 18px; }
         .q-badge { background-color: #0b1e47; color: white; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; }
         .subject-badge { background-color: #eff6ff; color: #1e40af; padding: 5px 15px; border-radius: 6px; font-size: 13px; font-weight: 700; border: 1px solid #bfdbfe; }
@@ -102,6 +109,8 @@
         .status-correct { color: #10b981; } .status-incorrect { color: #ef4444; } .status-skipped { color: #f97316; }
         .review-data-line { margin: 6px 0; font-size: 14px; color: #475569; }
         .review-data-line b { color: #0f172a; }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -115,7 +124,18 @@
         <div class="watermark-text">MEDHAVI STUDY POINT</div>
     </div>
 
-    <div id="quizWorkspace">
+    <!-- 1. लॉगिन स्क्रीन गेट (बिना मोबाइल नंबर) -->
+    <div id="boxLoginGate" class="login-card">
+        <h2>ऑनलाइन परीक्षा गेट</h2>
+        <p>कृपया अपना पूरा नाम दर्ज करके परीक्षा प्रारंभ करें।</p>
+        <input type="text" id="txtStudentName" placeholder="अपना नाम यहाँ लिखें..." required>
+        <button class="btn-main-action" onclick="validateAndStartQuiz()">परीक्षा शुरू करें 🚀</button>
+        <br><br>
+        <a href="../tests.html" style="color:#64748b; font-weight:600; text-decoration:none;">🔙 विषय चयन पर वापस जाएं</a>
+    </div>
+
+    <!-- 2. परीक्षा वर्कस्पेस (शुरुआत में छुपा हुआ) -->
+    <div id="quizWorkspace" class="hidden">
         <div class="cbt-header">
             <div class="header-left">
                 <h1>MEDHAVI STUDY POINT</h1>
@@ -157,11 +177,14 @@
         </div>
     </div>
 
+    <!-- 3. रिपोर्ट डैशबोर्ड -->
     <div id="boxReportDashboard" class="report-view">
         <div id="captureTarget" style="padding: 15px; background: white; border-radius: 12px;">
             <div class="report-header-title">Medhavi Study Point — Result Dashboard</div>
             <div class="report-subtitle">UPSC / UPPSC - Indian Polity Test मॉक परीक्षा डेटा रिपोर्ट कार्ड</div>
             
+            <p id="lblReportStudentName" style="font-size: 18px; font-weight: bold; text-align: center; color: #0b1e47; margin-bottom: 20px;"></p>
+
             <div class="grid-5-columns">
                 <div class="metric-card-wrapper"><div class="metric-card m-blue"><div id="valNetScore" class="metric-val">0 / 5</div><div class="metric-title">Total Score</div><div class="metric-desc">कुल प्राप्तांक</div></div></div>
                 <div class="metric-card-wrapper"><div class="metric-card m-green"><div id="valCorrectCount" class="metric-val">0</div><div class="metric-title">Correct</div><div class="metric-desc">सही उत्तर</div></div></div>
@@ -172,13 +195,16 @@
         </div>
 
         <button class="btn-telegram-share" onclick="captureCardAndOpenGroup()">📸 रिजल्ट इमेज कॉपी करें और ग्रुप में भेजें</button>
-        <a href="../index.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
+        <a href="../tests.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
 
         <div class="review-title">🔍 उत्तरों की विस्तृत समीक्षा (Review Answers)</div>
         <div id="boxReviewAnswersList"></div>
     </div>
 
     <script>
+        // आपका जादुई Apps Script लिंक
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlB0RBxOBW1BEAQF22i0wTC0QOnb4EeCVv1RxUGfKlVw8f2NE_eQB0a3YOrqVIbuLC/exec";
+
         document.addEventListener('contextmenu', event => event.preventDefault()); 
         document.onkeydown = function(e) {
             if (e.keyCode == 123 || e.keyCode == 44) { return false; }
@@ -190,7 +216,7 @@
             { id: 1, question: "Q_1. भारतीय संविधान का जनक किसे माना जाता है?", options: ["डॉ. राजेन्द्र प्रसाद", "जवाहरलाल नेहरू", "डॉ. बी. आर. अम्बेडकर", "सरदार वल्लभभाई पटेल"], correct: 2 },
             { id: 2, question: "Q_2. संविधान के किस भाग में मौलिक अधिकारों (Fundamental Rights) का वर्णन है?", options: ["भाग I", "भाग II", "भाग III", "भाग IV"], correct: 2 },
             { id: 3, question: "Q_3. भारत के राष्ट्रपति को पद की शपथ कौन दिलाता है?", options: ["भारत के मुख्य न्यायाधीश (CJI)", "प्रधानमंत्री", "उपराष्ट्रपति", "लोकसभा अध्यक्ष"], correct: 0 },
-            { id: 4, question: "Q_4. भारतीय संविधान की प्रस्तावना में 'धर्मनिरपेक्ष' शब्द किस संशोधन द्वारा जोड़ा गया?", options: ["44वां संशोधन", "42वां संशोधन", "24वां संशोधन", "86वां संशोधन"], correct: 1 },
+            { id: 4, question: "Q_4. भारतीय संविधान की प्रस्तावना में 'धर्मनिरपेक्ष' शब्द किस संशोधन द्वारा जोड़ा गया?", options: ["44वां संशोधन", "42वां संशोधन", "24वां संशोधन", "86वां संशोधन"], correct: 1 },
             { id: 5, question: "Q_5. लोक सभा का सदस्य बनने के लिए न्यूनतम आयु कितनी होनी चाहिए?", options: ["18 वर्ष", "21 वर्ष", "25 वर्ष", "30 वर्ष"], correct: 2 }
         ];
 
@@ -198,11 +224,33 @@
         const totalDurationSec = 5 * 60; 
         let timeRemainingSec = totalDurationSec;
         let countdownTimerId = null;
+        let studentName = "";
         
         const userResponses = new Array(dataset.length).fill(null);
         const markedMatrix = new Array(dataset.length).fill(false);
 
-        // सीधे इनिशियलाइज़ेशन बिना किसी देरी के
+        // रीअटेंप्ट लॉक चेक करना
+        window.onload = function() {
+            if (localStorage.getItem("quiz_attempted_polity_1") === "true") {
+                document.getElementById("boxLoginGate").innerHTML = `
+                    <h2 style="color:#ef4444;">🚫 एक्सेस ब्लॉक!</h2>
+                    <p>आप यह परीक्षा पहले ही दे चुके हैं। एक छात्र को केवल एक बार टेस्ट देने की अनुमति है।</p>
+                    <a href="../tests.html" style="color:#0b1e47; font-weight:bold; text-decoration:none;">🔙 वापस जाएं</a>
+                `;
+            }
+        };
+
+        function validateAndStartQuiz() {
+            studentName = document.getElementById("txtStudentName").value.trim();
+            if(!studentName) {
+                alert("कृपया परीक्षा शुरू करने के लिए अपना पूरा नाम भरें!");
+                return;
+            }
+            document.getElementById("boxLoginGate").classList.add("hidden");
+            document.getElementById("quizWorkspace").classList.remove("hidden");
+            initQuiz();
+        }
+
         function initQuiz() {
             document.getElementById('lblTotalNum').innerText = dataset.length;
             userResponses[0] = -1; 
@@ -244,185 +292,4 @@
                 const row = document.createElement('div');
                 row.className = 'option-item';
                 if (userResponses[idx] === oIdx) row.classList.add('selected');
-                
-                row.onclick = () => assignSelection(oIdx);
-                row.innerHTML = `<div class="option-circle">${badges[oIdx]}</div><div class="option-label">${txt}</div>`;
-                optionsWrapper.appendChild(row);
-            });
-            
-            const mainNavBtn = document.getElementById('btnMainNav');
-            if (idx === dataset.length - 1) {
-                mainNavBtn.innerText = '✔ सबमिट करें';
-                mainNavBtn.className = 'btn-main-action submit-state';
-            } else {
-                mainNavBtn.innerText = 'अगला ▶';
-                mainNavBtn.className = 'btn-main-action';
-            }
-            
-            if (userResponses[idx] === null && !markedMatrix[idx]) {
-                userResponses[idx] = -1; 
-            }
-            buildPaletteGrid();
-        }
-
-        function assignSelection(oIdx) {
-            userResponses[activeIndex] = oIdx;
-            document.querySelectorAll('.option-item').forEach((row, i) => {
-                if (i === oIdx) row.classList.add('selected');
-                else row.classList.remove('selected');
-            });
-            buildPaletteGrid();
-        }
-
-        function doClearAnswer() {
-            userResponses[activeIndex] = -1;
-            markedMatrix[activeIndex] = false;
-            displayQuestionCard(activeIndex);
-        }
-
-        function doToggleMark() {
-            markedMatrix[activeIndex] = !markedMatrix[activeIndex];
-            buildPaletteGrid();
-        }
-
-        function doNavigatePrev() {
-            if (activeIndex > 0) {
-                if (userResponses[activeIndex - 1] === null) userResponses[activeIndex - 1] = -1;
-                displayQuestionCard(activeIndex - 1);
-            }
-        }
-
-        function handleMainAction() {
-            if (activeIndex === dataset.length - 1) {
-                triggerTestSubmission();
-            } else {
-                if (userResponses[activeIndex + 1] === null) userResponses[activeIndex + 1] = -1;
-                displayQuestionCard(activeIndex + 1);
-            }
-        }
-
-        function jumpToTargetIdx(idx) {
-            if (userResponses[idx] === null) userResponses[idx] = -1;
-            displayQuestionCard(idx);
-        }
-
-        function buildPaletteGrid() {
-            const container = document.getElementById('boxPaletteGrid');
-            container.innerHTML = '';
-            
-            for (let i = 0; i < dataset.length; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'palette-cell';
-                cell.innerText = i + 1;
-                cell.onclick = () => jumpToTargetIdx(i);
-                
-                if (markedMatrix[i]) {
-                    cell.classList.add('pal-marked');
-                } else if (userResponses[i] >= 0 && userResponses[i] !== null) {
-                    cell.classList.add('pal-answered');
-                } else if (userResponses[i] === -1) {
-                    cell.classList.add('pal-visited');
-                } else {
-                    cell.classList.add('pal-unvisited');
-                }
-                container.appendChild(cell);
-            }
-        }
-
-        function triggerTestSubmission() {
-            if (confirm("क्या आप वाकई इस सुरक्षित टेस्ट को सबमिट करना चाहते हैं?")) {
-                commitFinalMetricsCalculation();
-            }
-        }
-
-        function forceAutomaticSubmission() {
-            alert("समय समाप्त हो गया है! आपकी उत्तर पुस्तिका स्वतः सबमिट की जा रही है।");
-            commitFinalMetricsCalculation();
-        }
-
-        function commitFinalMetricsCalculation() {
-            clearInterval(countdownTimerId);
-            
-            const elapsedTotalSec = totalDurationSec - timeRemainingSec;
-            const elapsedFormatted = `${Math.floor(elapsedTotalSec / 60)}m ${elapsedTotalSec % 60}s`;
-            
-            let rights = 0; let wrongs = 0; let skips = 0;
-            
-            dataset.forEach((q, idx) => {
-                const val = userResponses[idx];
-                if (val === null || val === -1) skips++;
-                else if (val === q.correct) rights++;
-                else wrongs++;
-            });
-            
-            document.getElementById('quizWorkspace').style.display = 'none';
-            
-            document.getElementById('valNetScore').innerText = `${rights} / ${dataset.length}`;
-            document.getElementById('valCorrectCount').innerText = rights;
-            document.getElementById('valIncorrectCount').innerText = wrongs;
-            document.getElementById('valSkippedCount').innerText = skips;
-            document.getElementById('valTimeConsumed').innerText = elapsedFormatted;
-            
-            const reviewContainer = document.getElementById('boxReviewAnswersList');
-            reviewContainer.innerHTML = '';
-            
-            dataset.forEach((q, idx) => {
-                const chosen = userResponses[idx];
-                const block = document.createElement('div');
-                let evalString = ''; let userChoiceText = ''; let classType = '';
-                
-                if (chosen === null || chosen === -1) {
-                    evalString = '<span class="review-status-mark status-skipped">✗</span>';
-                    userChoiceText = '<span style="color:#f97316; font-weight:600;">हल नहीं किया (Skipped)</span>';
-                    classType = 'skipped-left';
-                } else if (chosen === q.correct) {
-                    evalString = '<span class="review-status-mark status-correct">✓</span>';
-                    userChoiceText = q.options[chosen];
-                    classType = 'correct-left';
-                } else {
-                    evalString = '<span class="review-status-mark status-incorrect">✗</span>';
-                    userChoiceText = q.options[chosen];
-                    classType = 'incorrect-left';
-                }
-                
-                block.className = `review-card-item ${classType}`;
-                block.innerHTML = `
-                    <div class="review-question-row">${evalString} ${q.question}</div>
-                    <div class="review-data-line"><b>आपका उत्तर:</b> ${userChoiceText}</div>
-                    <div class="review-data-line"><b>सही उत्तर:</b> ${q.options[q.correct]}</div>
-                `;
-                reviewContainer.appendChild(block);
-            });
-            
-            document.getElementById('boxReportDashboard').style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        function captureCardAndOpenGroup() {
-            const target = document.getElementById("captureTarget");
-            html2canvas(target, { useCORS: true, scale: 2 }).then(canvas => {
-                canvas.toBlob(blob => {
-                    const item = new ClipboardItem({ "image/png": blob });
-                    navigator.clipboard.write([item]).then(() => {
-                        alert("शानदार! रिपोर्ट कार्ड कॉपी हो चुका है। ओके दबाते ही ग्रुप खुलेगा, वहां पेस्ट कर दें।");
-                        window.location.href = "https://t.me/medhavistudypointAjitSir";
-                    }).catch(err => {
-                        const link = document.createElement('a');
-                        link.download = 'Medhavi-Scorecard.png';
-                        link.href = canvas.toDataURL();
-                        link.click();
-                        window.location.href = "https://t.me/medhavistudypointAjitSir";
-                    });
-                });
-            });
-        }
-
-        // डोम कंटेंट लोड होते ही तुरंत रन होगा
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initQuiz);
-        } else {
-            initQuiz();
-        }
-    </script>
-</body>
-</html>
+          
