@@ -6,6 +6,7 @@ let timeRemainingSec = totalDurationSec;
 let countdownTimerId = null;
 let studentName = "";
 
+// शुरू में सभी रिस्पॉन्स खाली (null) रहेंगे
 const userResponses = new Array(dataset.length).fill(null);
 const markedMatrix = new Array(dataset.length).fill(false);
 
@@ -39,6 +40,7 @@ function validateAndStartQuiz() {
 
 function initQuiz() {
     document.getElementById('lblTotalNum').innerText = dataset.length;
+    // केवल पहले प्रश्न को विज़िटेड (-1) मार्क करेंगे
     userResponses[0] = -1; 
     buildPaletteGrid();
     displayQuestionCard(0);
@@ -77,6 +79,7 @@ function displayQuestionCard(idx) {
     item.options.forEach((txt, oIdx) => {
         const row = document.createElement('div');
         row.className = 'option-item';
+        // अगर छात्र ने पहले से कोई विकल्प चुना हुआ है (यानी >= 0)
         if (userResponses[idx] === oIdx) row.classList.add('selected');
         
         row.onclick = () => assignSelection(oIdx);
@@ -93,7 +96,8 @@ function displayQuestionCard(idx) {
         mainNavBtn.className = 'btn-main-action';
     }
     
-    if (userResponses[idx] === null && !markedMatrix[idx]) {
+    // अगर पहली बार इस प्रश्न पर आए हैं, तो इसे विज़िटेड (-1) सेट करें
+    if (userResponses[idx] === null) {
         userResponses[idx] = -1; 
     }
     buildPaletteGrid();
@@ -142,16 +146,22 @@ function jumpToTargetIdx(idx) {
 
 function buildPaletteGrid() {
     const container = document.getElementById('boxPaletteGrid');
+    if(!container) return;
     container.innerHTML = '';
     
     for (let i = 0; i < dataset.length; i++) {
         const cell = document.createElement('div');
         cell.className = 'palette-cell ';
         
-        if (markedMatrix[i]) cell.classList.add('pal-marked');
-        else if (userResponses[i] >= 0) cell.classList.add('pal-answered');
-        else if (userResponses[i] === -1) cell.classList.add('pal-visited');
-        else cell.classList.add('pal-unvisited');
+        if (markedMatrix[i]) {
+            cell.classList.add('pal-marked');
+        } else if (userResponses[i] >= 0) {
+            cell.classList.add('pal-answered'); // उत्तर देने पर ही हरा होगा
+        } else if (userResponses[i] === -1) {
+            cell.classList.add('pal-visited'); // देखने पर लाल बॉर्डर
+        } else {
+            cell.classList.add('pal-unvisited'); // नहीं देखने पर सफेद डिब्बा
+        }
         
         cell.innerText = i + 1;
         cell.onclick = () => jumpToTargetIdx(i);
@@ -173,15 +183,19 @@ function triggerTestSubmission() {
 
 function processFinalCalculation() {
     document.getElementById('quizWorkspace').classList.add('hidden');
-    document.getElementById('boxReportDashboard').style.display = 'block';
-    document.getElementById('lblReportStudentName').innerText = "परीक्षार्थी: " + studentName;
+    
+    const dashboard = document.getElementById('boxReportDashboard');
+    if(dashboard) dashboard.style.display = 'block';
+    
+    const studentNameLbl = document.getElementById('lblReportStudentName');
+    if(studentNameLbl) studentNameLbl.innerText = "परीक्षार्थी: " + studentName;
     
     let correct = 0;
     let incorrect = 0;
     let skipped = 0;
     
     const reviewWrapper = document.getElementById('boxReviewAnswersList');
-    reviewWrapper.innerHTML = '';
+    if(reviewWrapper) reviewWrapper.innerHTML = '';
     
     dataset.forEach((item, idx) => {
         const userAns = userResponses[idx];
@@ -204,14 +218,16 @@ function processFinalCalculation() {
             statusText = '<span class="review-status-mark status-incorrect">❌ गलत</span>';
         }
         
-        const rCard = document.createElement('div');
-        rCard.className = cardClass;
-        rCard.innerHTML = `
-            <div class="review-question-row">${statusText} ${item.question}</div>
-            <div class="review-data-line"><b>आपका उत्तर:</b> ${userAns >= 0 ? item.options[userAns] : 'अनांसरित'}</div>
-            <div class="review-data-line"><b>सही उत्तर:</b> ${item.options[item.correct]}</div>
-        `;
-        reviewWrapper.appendChild(rCard);
+        if(reviewWrapper) {
+            const rCard = document.createElement('div');
+            rCard.className = cardClass;
+            rCard.innerHTML = `
+                <div class="review-question-row">${statusText} ${item.question}</div>
+                <div class="review-data-line"><b>आपका उत्तर:</b> ${userAns >= 0 ? item.options[userAns] : 'अनांसरित'}</div>
+                <div class="review-data-line"><b>सही उत्तर:</b> ${item.options[item.correct]}</div>
+            `;
+            reviewWrapper.appendChild(rCard);
+        }
     });
     
     const timeConsumedSec = totalDurationSec - timeRemainingSec;
@@ -219,20 +235,24 @@ function processFinalCalculation() {
     const secStr = (timeConsumedSec % 60).toString().padStart(2, '0');
     const timeStr = `${minStr}:${secStr}`;
     
-    document.getElementById('valNetScore').innerText = `${correct} / ${dataset.length}`;
-    document.getElementById('valCorrectCount').innerText = correct;
-    document.getElementById('valIncorrectCount').innerText = incorrect;
-    document.getElementById('valSkippedCount').innerText = skipped;
-    document.getElementById('valTimeConsumed').innerText = timeStr;
+    // डेटा को रिपोर्ट कार्ड में डालना
+    if(document.getElementById('valNetScore')) document.getElementById('valNetScore').innerText = `${correct} / ${dataset.length}`;
+    if(document.getElementById('valCorrectCount')) document.getElementById('valCorrectCount').innerText = correct;
+    if(document.getElementById('valIncorrectCount')) document.getElementById('valIncorrectCount').innerText = incorrect;
+    if(document.getElementById('valSkippedCount')) document.getElementById('valSkippedCount').innerText = skipped;
+    if(document.getElementById('valTimeConsumed')) document.getElementById('valTimeConsumed').innerText = timeStr;
     
+    // ऑटो-डाउनलोड रिजल्ट कार्ड इमेज
     setTimeout(() => {
         const target = document.getElementById('captureTarget');
-        html2canvas(target, { scale: 2 }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = studentName + '_Result_Card.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
+        if(target) {
+            html2canvas(target, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = studentName + '_Result_Card.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
     }, 1000);
 
     let postData = {
@@ -257,6 +277,7 @@ function processFinalCalculation() {
 
 function captureCardAndOpenGroup() {
     const target = document.getElementById('captureTarget');
+    if(!target) return;
     html2canvas(target, { scale: 2 }).then(canvas => {
         canvas.toBlob(blob => {
             if (navigator.clipboard && navigator.clipboard.write) {
@@ -270,5 +291,4 @@ function captureCardAndOpenGroup() {
             }
         }, "image/png");
     });
-        }
-      
+                           }
