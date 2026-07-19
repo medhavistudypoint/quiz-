@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medhavi Study Point - History Test 1</title>
-    <!-- रूट डायरेक्टरी से सीधे सीएसएस लिंक की गई है -->
-    <link rel="stylesheet" href="/global-style.css">
+    <!-- कैशे की समस्या खत्म करने के लिए वर्जन ट्रिक लगाई गई है -->
+    <link rel="stylesheet" href="../global-style.css?v=1.1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
@@ -15,17 +15,17 @@
         <div class="watermark-text">MEDHAVI STUDY POINT</div>
     </div>
 
-    <!-- 1. लॉगिन गेट स्क्रीन -->
+    <!-- 1. लॉगिन गेट screen -->
     <div id="boxLoginGate" class="login-card">
         <h2>Medhavi Online Test Gate</h2>
         <p>कृपया अपना नाम दर्ज करें और टेस्ट शुरू करें.</p>
         <input type="text" id="txtStudentName" placeholder="अपना नाम यहाँ लिखें..." required>
         <button class="btn-main-action" onclick="validateAndStartQuiz()">परीक्षा शुरू करें 🚀</button>
         <br><br>
-        <a href="/tests.html" style="color:#64748b; font-weight:600; text-decoration:none;">🔙 विषय चयन पर वापस जाएं</a>
+        <a href="../tests.html" style="color:#64748b; font-weight:600; text-decoration:none;">🔙 विषय चयन पर वापस जाएं</a>
     </div>
 
-    <!-- 2. परीक्षा वर्कस्पेस स्क्रीन -->
+    <!-- 2. परीक्षा वर्कस्पेस screen -->
     <div id="quizWorkspace" class="hidden">
         <div class="cbt-header">
             <div class="header-left">
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <!-- 3. रिपोर्ट डैशबोर्ड स्क्रीन -->
+    <!-- 3. रिपोर्ट डैशबोर्ड screen -->
     <div id="boxReportDashboard" class="report-view">
         <div id="captureTarget" style="padding: 25px; background: white; border-radius: 12px;">
             <div class="report-header-title">Medhavi Study Point — Result Dashboard</div>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <button class="btn-telegram-share" onclick="captureCardAndOpenGroup()">📸 रिजल्ट इमेज कॉपी करें</button>
-        <a href="/tests.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
+        <a href="../tests.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
         <div id="boxReviewAnswersList"></div>
     </div>
 
@@ -85,12 +85,12 @@
             { id: 5, question: "किस सुल्तान ने 'इक्ता प्रणाली' की शुरुआत की थी?", options: ["कुतुबुद्दीन ऐबक", "इल्तुतमिश", "बलबन", "अलाउद्दीन खिलजी"], correct: 1 },
             { id: 6, question: "पानीपत का द्वितीय युद्ध (1556) किनके बीच लड़ा गया था?", options: ["बाबर और इब्राहिम लोदी", "अकबर और हेमू", "अकबर और राणा प्रताप", "मराठा और अब्दाली"], correct: 1 },
             { id: 7, question: "स्थायी बंदोबस्त (Permanent Settlement) किसने लागू की थी?", options: ["हेस्टिंग्स", "कॉर्नवालिस", "बैंटिक", "डलहौजी"], correct: 1 },
-            { id: 8, question: "1857 के विद्रोह के समय गवर्नर जनरल कौन था?", options: ["डलहौजी", "कैनिंग", "कर्जन", "माउंटбетन"], correct: 1 },
+            { id: 8, question: "1857 के विद्रोह के समय गवर्नर जनरल कौन था?", options: ["डलहौजी", "कैनिंग", "कर्जन", "माउंटबेटन"], correct: 1 },
             { id: 9, question: "जलियांवाला बाग हत्याकांड के बाद किसने 'नाइटहुड' वापस की?", options: ["गांधी", "रवींद्रनाथ टैगोर", "गोखले", "तिलक"], correct: 1 },
             { id: 10, question: "पूर्ण स्वराज की मांग किस अधिवेशन में की गई?", options: ["सूरत", "कलकत्ता", "लाहौर", "कराची"], correct: 2 }
         ];
     </script>
-    <!-- रूट डायरेक्टरी से सीधे मुख्य जावास्क्रिप्ट लिंक की गई है -->
-    <script src="/global-quiz.js"></script>
+    <!-- जावास्क्रिप्ट के पीछे भी वर्जन ट्रिक लगा दी है ताकि पुराना कैशे लोड न हो -->
+    <script src="../global-quiz.js?v=1.1"></script>
 </body>
 </html>
