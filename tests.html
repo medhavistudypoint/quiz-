@@ -67,7 +67,8 @@
                 <a href="homescience/test1.html" class="test-card">📝 Mock Test - 1</a>
                 <a href="homescience/test2.html" class="test-card">📝 Mock Test - 2</a>
                 <a href="homescience/test3.html" class="test-card">📝 Mock Test - 3</a>
-                <a href="homescience/test4.html" class="test-card">📝 Mock Test - 4</a>
+                <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-07-19T16:42:00" data-end="2026-07-19T17:00:00" data-link="homescience/test4.html" style="display: flex; justify-content: space-between; align-items: center;"><span>📝 Mock Test - 4</span><span class="status-msg" style="font-size: 13px; font-weight: bold;">Loading...</span></a>
+                    
             </div>
         </div>
 
@@ -213,6 +214,37 @@
                 if(c) c.classList.remove('sub-active');
             });
         }
+
+    function updateStatus() {
+        const now = new Date().getTime();
+        document.querySelectorAll('.test-card-timer').forEach(card => {
+            const startTime = new Date(card.getAttribute('data-start')).getTime();
+            const endTime = new Date(card.getAttribute('data-end')).getTime();
+            const link = card.getAttribute('data-link');
+            const msgBox = card.querySelector('.status-msg');
+
+            if (now < startTime) {
+                msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
+                card.style.pointerEvents = "none"; 
+                card.style.opacity = "0.7";
+            } else if (now >= startTime && now <= endTime) {
+                msgBox.innerHTML = "<span style='color:green;'>✅ Live Now (Start)</span>";
+                card.style.pointerEvents = "auto";
+                card.style.opacity = "1";
+                card.style.cursor = "pointer";
+                card.onclick = function() { window.location.href = link; };
+            } else {
+                msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
+                card.style.pointerEvents = "none";
+                card.style.opacity = "0.5";
+                card.onclick = null;
+            }
+        });
+    }
+    setInterval(updateStatus, 1000);
+    updateStatus();
+                    
+        
     </script>
 </body>
 </html>
