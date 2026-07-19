@@ -3,68 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medhavi Study Point - Professional Coaching Portal</title>
+    <title>Medhavi Study Point - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
-
-        /* Hero Section */
-        .hero { background: linear-gradient(135deg, #0b1e47, #1e3a8a); color: white; padding: 60px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; }
-        .hero h1 { font-size: 36px; margin: 0; color: #ffcc00; }
-        .hero p { font-size: 18px; opacity: 0.9; margin-top: 10px; }
-
-        /* Section Container */
-        .container { max-width: 1000px; margin: -30px auto 40px; padding: 0 20px; }
-
-        /* Quick Access Grid */
-        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .nav-card { background: white; padding: 30px; border-radius: 16px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; text-decoration: none; color: #1e293b; border: 1px solid #e2e8f0; }
-        .nav-card:hover { transform: translateY(-10px); box-shadow: 0 20px 30px rgba(0,0,0,0.1); border-color: #ffcc00; }
-        .nav-card i { font-size: 30px; color: #0b1e47; margin-bottom: 15px; display: block; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Poppins', sans-serif; background-color: #f8fafc; color: #1e293b; padding-bottom: 40px; 
+            user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+        }
         
-        /* About & Updates */
-        .flex-box { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 40px; }
-        .box { background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; }
-        .box h2 { color: #0b1e47; border-bottom: 2px solid #ffcc00; display: inline-block; padding-bottom: 5px; margin-top: 0; }
+        /* मुख्य बैनर */
+        .hero-banner { background-color: #0b1e47; color: white; padding: 60px 20px; text-align: center; border-bottom: 5px solid #ffcc00; }
+        .hero-banner h1 { font-size: 32px; font-weight: 800; color: #ffcc00; letter-spacing: 1px; margin-bottom: 10px; }
+        .hero-banner p { font-size: 16px; opacity: 0.9; font-weight: 400; max-width: 600px; margin: 0 auto; line-height: 1.6; }
 
-        @media (max-width: 768px) { .flex-box { grid-template-columns: 1fr; } }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        
+        .welcome-card { background: white; border-radius: 16px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; margin-bottom: 35px; }
+        .welcome-card h2 { font-size: 20px; color: #0b1e47; margin-bottom: 10px; }
+        .welcome-card p { font-size: 14px; color: #64748b; line-height: 1.5; }
+
+        /* मेनू ग्रिड */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        
+        .menu-card { 
+            background: white; border-radius: 16px; padding: 25px; display: flex; align-items: center; 
+            text-decoration: none; box-shadow: 0 6px 15px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; 
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .menu-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        
+        /* कार्ड्स के अलग-अलग बॉर्डर्स */
+        .card-notes { border-left: 8px solid #2563eb; }
+        .card-notes:hover { border-color: #1d4ed8; }
+        .card-tests { border-left: 8px solid #10b981; }
+        .card-tests:hover { border-color: #059669; }
+        .card-videos { border-left: 8px solid #ef4444; }
+        .card-videos:hover { border-color: #dc2626; }
+
+        .icon-box { font-size: 40px; margin-right: 20px; }
+        
+        .info-box { flex-grow: 1; }
+        .info-box h3 { font-size: 20px; font-weight: 700; color: #0b1e47; margin-bottom: 5px; }
+        .info-box p { font-size: 13px; color: #64748b; }
+
+        .arrow { font-size: 20px; color: #cbd5e1; font-weight: bold; transition: 0.2s; }
+        .menu-card:hover .arrow { color: #0b1e47; transform: translateX(3px); }
+
+        /* फुटर */
+        .footer { text-align: center; margin-top: 50px; font-size: 12px; color: #94a3b8; }
+
+        @media print { body, html { display: none !important; } }
     </style>
 </head>
 <body>
 
-    <div class="hero">
+    <!-- मुख्य बैनर अनुभाग -->
+    <div class="hero-banner">
         <h1>MEDHAVI STUDY POINT</h1>
-        <p>ज्ञान, अनुशासन और सफलता का डिजिटल सारथी</p>
+        <p>उत्कृष्टता की ओर बढ़ते कदम - आपकी सफलता हमारा संकल्प</p>
     </div>
 
     <div class="container">
-        <!-- Quick Nav (पूरी तरह इंग्लिश में) -->
-        <div class="nav-grid">
-            <a href="tests.html" class="nav-card"><i>📝</i> <b>Online Tests</b>
-                <br><span style="font-size:12px; color:#64748b;">मॉक टेस्ट सीरीज</span></a>
-            <a href="videos.html" class="nav-card"><i>▶️</i> <b>Video Classes</b><br><span style="font-size:12px; color:#64748b;">YouTube लेक्चर्स</span></a>      
-<a href="notes.html" class="nav-card"><i>📚</i> <b>PDF Notes</b><br><span style="font-size:12px; color:#64748b;">डाउनलोड नोट्स</span></a>
-            <a href="https://t.me/medhavistudypointAjitSir" target="_blank" class="nav-card"><i>📢</i> <b>Telegram Group</b><br><span style="font-size:12px; color:#64748b;">जुड़ें हमारे साथ</span></a>
+        
+        <!-- स्वागत कार्ड -->
+        <div class="welcome-card">
+            <h2>👋 डिजिटल लर्निंग सेंटर में आपका स्वागत है</h2>
+            <p>यहाँ आपको प्रतियोगी परीक्षाओं और शैक्षणिक पाठ्यक्रम के लिए उच्च गुणवत्ता वाले चुनिंदा नोट्स, ऑनलाइन अभ्यास टेस्ट और महत्वपूर्ण वीडियो लेक्चर एक ही जगह पर मिलेंगे।</p>
         </div>
 
-        <div class="flex-box">
-            <!-- About Section (सुधरी हुई हेडिंग) -->
-            <div class="box">
-                <h2>About Institute</h2>
-                <p>Medhavi Study Point का उद्देश्य प्रत्येक विद्यार्थी को गुणवत्तापूर्ण शिक्षा प्रदान करना है। हम आपकी सफलता के लिए प्रतिबद्ध हैं। यहाँ आपको वो सब मिलेगा जो आपकी परीक्षा की तैयारी को एक नया आयाम दे सके।</p>
-            </div>
+        <!-- मुख्य मेनू नेविगेशन -->
+        <div class="menu-grid">
+            
+            <!-- 1. अध्ययन नोट्स लिंक -->
+            <a href="notes.html" class="menu-card card-notes">
+                <div class="icon-box">📚</div>
+                <div class="info-box">
+                    <h3>विषयवार अध्ययन नोट्स</h3>
+                    <p>NCERT किताबें, मुख्य परीक्षा के विशेष नोट्स और महत्वपूर्ण पीडीएफ डाउनलोड करें</p>
+                </div>
+                <div class="arrow">➔</div>
+            </a>
 
-            <!-- Latest Update -->
-            <div class="box">
-                <h2>लेटेस्ट अपडेट</h2>
-                <ul style="padding-left: 20px; margin-bottom: 0;">
-                    <li>राजव्यवस्था टेस्ट-1 लाइव!</li>
-                    <li>नोट्स सेक्शन जल्द अपडेट होगा।</li>
-                    <li>टेलीग्राम पर क्विज़ जारी है।</li>
-                </ul>
-            </div>
+            <!-- 2. ऑनलाइन टेस्ट लिंक -->
+            <a href="tests.html" class="menu-card card-tests">
+                <div class="icon-box">📝</div>
+                <div class="info-box">
+                    <h3>ऑनलाइन अभ्यास टेस्ट</h3>
+                    <p>अपनी तैयारी को परखें, महत्वपूर्ण बहुविकल्पीय प्रश्न और लाइव क्विज हल करें</p>
+                </div>
+                <div class="arrow">➔</div>
+            </a>
+
+            <!-- 3. वीडियो क्लासेज लिंक -->
+            <a href="videos.html" class="menu-card card-videos">
+                <div class="icon-box">🎥</div>
+                <div class="info-box">
+                    <h3>वीडियो लेक्चर क्लासेज</h3>
+                    <p>कठिन विषयों को आसानी से समझने के लिए हमारे चुनिंदा वीडियो गाइड देखें</p>
+                </div>
+                <div class="arrow">➔</div>
+            </a>
+
+        </div>
+
+        <!-- फुटर कॉपीराइट -->
+        <div class="footer">
+            <p>© 2026 मेधावी स्टडी पॉइंट. सर्वाधिकार सुरक्षित।</p>
         </div>
     </div>
 
+    <script>
+        // राइट क्लिक रोकना
+        document.addEventListener('contextmenu', event => event.preventDefault()); 
+        
+        // कीबोर्ड शॉर्टकट्स रोकना (Inspect Element, Copy, Print)
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || e.keyCode == 44) return false;
+            if (e.ctrlKey && (e.keyCode === 80 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 85)) { 
+                alert("मेधावी STUDY POINT सामग्री सुरक्षित है।");
+                return false; 
+            }
+        };
+    </script>
 </body>
 </html>
