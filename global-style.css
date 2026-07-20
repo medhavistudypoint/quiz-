@@ -19,30 +19,31 @@ body {
     display: none !important;
 }
 
-/* Watermark Overlay */
+/* Watermark Overlay - तिरछा और थोड़ा ऊपर खिसका हुआ */
 .watermark-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100vw;
-    height: 100vh;
     pointer-events: none;
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    opacity: 0.04;
+    opacity: 0.05;
 }
 
 .watermark-text {
-    font-size: 8vw;
+    font-size: 7vw;
     font-weight: 900;
     color: #000;
-    transform: rotate(-30deg);
+    transform: rotate(-25deg);
     white-space: nowrap;
     user-select: none;
 }
+
 
 /* 1. Login Gate Card */
 .login-card {
