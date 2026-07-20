@@ -1,8 +1,15 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlB0RBxOBW1BEAQF22i0wTC0QOnb4EeCVv1RxUGfKlVw8f2NE_eQB0a3YOrqVIbuLC/exec";
 
 let activeIndex = 0;
-const totalDurationSec = 5 * 60; 
+// HTML के countdownTimer डिब्बे से समय (उदा. 55:00) पढ़कर टाइमर सेट करें
+const timerElem = document.getElementById('countdownTimer');
+const timeParts = timerElem ? timerElem.innerText.trim().split(':') : ["05", "00"];
+const parsedMins = parseInt(timeParts[0], 10) || 5;
+const parsedSecs = parseInt(timeParts[1], 10) || 0;
+
+const totalDurationSec = (parsedMins * 60) + parsedSecs;
 let timeRemainingSec = totalDurationSec;
+
 let countdownTimerId = null;
 let studentName = "";
 let isReattemptMode = false;
