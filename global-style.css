@@ -447,3 +447,8 @@ body {
 .status-correct { color: #16a34a; }
 .status-incorrect { color: #dc2626; }
 .status-skipped { color: #64748b; }
+/* वर्तमान प्रश्न पर रेड बॉर्डर (होम साइंस स्टाइल) */
+.palette-cell.active-current-q {
+    border: 2px solid #ef4444 !important;
+    font-weight: bold;
+}
