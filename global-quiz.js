@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlB0RBxOBW1BEAQF22i0wTC0QOnb4EeCVv1RxUGfKlVw8f2NE_eQB0a3YOrqVIbuLC/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJNj3ad9VwsDf8hazzXdx5adOI-2SuWDCgIGdq0Z2nyLTUlInB-MZVFiRrlg1TBCZE/exec";
 
 let activeIndex = 0;
 // HTML के countdownTimer डिब्बे से समय (उदा. 55:00) पढ़कर टाइमर सेट करें
@@ -330,6 +330,8 @@ function processFinalCalculation() {
     }, 1000);
 
     let postData = {
+            quizKey: typeof QUIZ_KEY !== 'undefined' ? QUIZ_KEY : 'General_Results',
+        
         studentName: studentName,
         studentMobile: isReattemptMode ? "Re-attempt" : "Not Provided",
         score: correct, 
