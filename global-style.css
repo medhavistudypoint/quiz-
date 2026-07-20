@@ -19,30 +19,38 @@ body {
     display: none !important;
 }
 
-/* Watermark Overlay - तिरछा और थोड़ा ऊपर खिसका हुआ */
+/* Watermark Overlay - Large & High Visibility */
 .watermark-overlay {
     position: fixed;
-    top: 35%;
+    top: 38%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100vw;
-    pointer-events: none;
-    z-index: 9999;
+    pointer-events: none !important;
+    z-index: 999999 !important;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    opacity: 0.05;
 }
 
 .watermark-text {
-    font-size: 7vw;
+    font-size: 32px; /* 👈 मोबाइल स्क्रीन पर बड़ा और साफ़ दिखेगा */
     font-weight: 900;
-    color: #000;
+    color: rgba(11, 30, 71, 0.20); /* 👈 डार्कनेस बढ़ाकर 20% कर दी गई है */
     transform: rotate(-25deg);
     white-space: nowrap;
     user-select: none;
+    letter-spacing: 2px;
 }
+
+/* बड़े स्क्रीन (लैपटॉप/टैबलेट) के लिए साइज अपने आप और बड़ा हो जाएगा */
+@media (min-width: 768px) {
+    .watermark-text {
+        font-size: 55px;
+    }
+}
+
 
 
 /* 1. Login Gate Card */
