@@ -25,8 +25,8 @@
 
         .sub-panel { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 15px; display: none; }
         
-        /* छोटा बैक बटन स्टाइल */
-        .btn-mini-back { display: inline-block; margin-top: 20px; padding: 8px 18px; background-color: #0b1e47; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; cursor: pointer; border: none; transition: 0.2s; }
+        /* 🎯 बैक बटन दाएँ (Right Side) अलाइनमेंट */
+        .btn-mini-back { display: block; margin-left: auto; margin-top: 20px; padding: 8px 18px; background-color: #0b1e47; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; cursor: pointer; border: none; transition: 0.2s; }
         .btn-mini-back:hover { background-color: #1e3a8a; }
 
         .btn-back-home { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; }
@@ -45,14 +45,14 @@
             
             <!-- विषय चयन ग्रिड -->
             <div class="subject-grid">
-                <div class="subject-card" onclick="toggleSubject('Polity', '🏛️ Polity')">🏛️ Polity</div>
-                <div class="subject-card" onclick="toggleSubject('History', '📜 History')">📜 History</div>
-                <div class="subject-card" onclick="toggleSubject('Geography', '🌍 Geography')">🌍 Geography</div>
-                <div class="subject-card" onclick="toggleSubject('Economics', '💰 Economics')">💰 Economics</div>
-                <div class="subject-card" onclick="toggleSubject('Science', '🔬 Science')">🔬 Science</div>
-                <div class="subject-card" onclick="toggleSubject('Environment', '🌱 Environment')">🌱 Environment</div>
-                <div class="subject-card" onclick="toggleSubject('Computer', '💻 Computer')">💻 Computer</div>
-                <div class="subject-card" onclick="toggleSubject('UPSpecial', '🏹 UP Special')">🏹 UP Special</div>
+                <div class="subject-card" onclick="toggleSubject('polity', '🏛️ Polity')">🏛️ Polity</div>
+                <div class="subject-card" onclick="toggleSubject('history', '📜 History')">📜 History</div>
+                <div class="subject-card" onclick="toggleSubject('geography', '🌍 Geography')">🌍 Geography</div>
+                <div class="subject-card" onclick="toggleSubject('economics', '💰 Economics')">💰 Economics</div>
+                <div class="subject-card" onclick="toggleSubject('science', '🔬 Science')">🔬 Science</div>
+                <div class="subject-card" onclick="toggleSubject('environment', '🌱 Environment')">🌱 Environment</div>
+                <div class="subject-card" onclick="toggleSubject('computer', '💻 Computer')">💻 Computer</div>
+                <div class="subject-card" onclick="toggleSubject('upspecial', '🏹 UP Special')">🏹 UP Special</div>
             </div>
 
             <!-- 1. Polity Panel -->
@@ -78,7 +78,6 @@
             <div id="panelGeography" class="sub-panel">
                 <div class="test-list">
                     <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="geography/test1.html"><span>📝 Geography Test - 1</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="geography/test2.html"><span>📝 Geography Test - 2</span><span class="status-msg">Loading...</span></a>
                 </div>
                 <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
@@ -95,8 +94,6 @@
             <div id="panelScience" class="sub-panel">
                 <div class="test-list">
                     <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test1.html"><span>📝 Science Test - 1</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test2.html"><span>📝 Science Test - 2</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test3.html"><span>📝 Science Test - 3</span><span class="status-msg">Loading...</span></a>
                 </div>
                 <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
@@ -139,7 +136,10 @@
             document.querySelector('.subject-grid').style.display = 'none';
             hideAllSubPanels();
 
-            const targetPanel = document.getElementById('panel' + subjectTarget);
+            // केस सेंसिटिव फिक्स (पहला अक्षर बड़ा करना)
+            const formattedName = subjectTarget.charAt(0).toUpperCase() + subjectTarget.slice(1);
+            const targetPanel = document.getElementById('panel' + formattedName);
+            
             if(targetPanel) {
                 targetPanel.style.display = 'block';
             }
