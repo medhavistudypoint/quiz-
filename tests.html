@@ -27,8 +27,7 @@
         .panel-title { font-size: 22px; font-weight: 700; color: #0b1e47; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #ffcc00; padding-bottom: 8px; }
         
         /* टेस्ट लिस्ट ग्रिड */
-        .test-list { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-        
+        .test-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 500px) { .test-list { grid-template-columns: 1fr; } }
         .test-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; text-align: center; transition: 0.2s; }
         .test-card:hover { background: #0b1e47; color: white; border-color: #0b1e47; }
@@ -195,7 +194,7 @@
         
 
         <!-- 2. GK/GS का पैनल -->
-            <div id="panelGKGS" class="content-panel" style="display: none;">
+            <div id="panelGKGS" class="content-panel"
             <div class="panel-title">GK / GS - Select Subject</div>
             
             <!-- सब्जेक्ट्स की लिस्ट -->
@@ -295,27 +294,24 @@
         const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
 
         function showSection(section) {
-    // 1. दोनों बटन की एक्टिव क्लास हटाओ
+function showSection(section) {
     document.getElementById('btnHomeScience').classList.remove('active');
     document.getElementById('btnGKGS').classList.remove('active');
-    
-    // 2. दोनों मुख्य पैनल बंद करो
-    var panelHS = document.getElementById('panelHomeScience');
-    var panelGK = document.getElementById('panelGKGS');
-    if (panelHS) panelHS.style.display = 'none';
-    if (panelGK) panelGK.style.display = 'none';
+    document.getElementById('panelHomeScience').style.display = 'none';
+    document.getElementById('panelGKGS').style.display = 'none';
 
-    // 3. जो सेक्शन चुना गया है उसे खोलो
+    // GK/GS के सारे सब-पैनल्स को बंद करना
+    hideAllSubPanels();
+
     if (section === 'homescience') {
         document.getElementById('btnHomeScience').classList.add('active');
-        if (panelHS) panelHS.style.display = 'block';
+        document.getElementById('panelHomeScience').style.display = 'block';
     } else if (section === 'gkgs') {
         document.getElementById('btnGKGS').classList.add('active');
-        if (panelGK) panelGK.style.display = 'block';
+        document.getElementById('panelGKGS').style.display = 'block';
     }
         }
         
-
         // किसी एक विषय पर क्लिक करने का डायनामिक फंक्शन
         function toggleSubject(subjectTarget) {
             // पहली अक्षर को बड़ा बनाने के लिए (जैसे polity -> Polity)
