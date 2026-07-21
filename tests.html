@@ -27,8 +27,12 @@
         .panel-title { font-size: 22px; font-weight: 700; color: #0b1e47; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #ffcc00; padding-bottom: 8px; }
         
         /* टेस्ट लिस्ट ग्रिड */
-        .test-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media (max-width: 500px) { .test-list { grid-template-columns: 1fr; } }
+        .test-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+        }
+        
         .test-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; text-align: center; transition: 0.2s; }
         .test-card:hover { background: #0b1e47; color: white; border-color: #0b1e47; }
 
