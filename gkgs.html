@@ -176,62 +176,77 @@
     </div>
 
     <script>
-        const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
+    const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
 
-        function toggleSubject(subjectTarget) {
-            const formattedName = subjectTarget.charAt(0).toUpperCase() + subjectTarget.slice(1);
-            const targetPanel = document.getElementById('panel' + formattedName);
-            const targetCard = document.getElementById('sub' + formattedName);
+    function toggleSubject(subjectTarget) {
+        const formattedName = subjectTarget.charAt(0).toUpperCase() + subjectTarget.slice(1);
+        
+        // 1. सब्जेक्ट ग्रिड को छुपाना
+        document.querySelector('.subject-grid').style.display = 'none';
+        
+        // 2. सारे सब-पैनल्स बंद करना
+        hideAllSubPanels();
+
+        // 3. चुने गए सब-पैनल को दिखाना
+        const targetPanel = document.getElementById('panel' + formattedName);
+        if(targetPanel) {
+            targetPanel.style.display = 'block';
             
-            const isVisible = targetPanel.style.display === 'block';
-            hideAllSubPanels();
-
-            if(!isVisible) {
-                targetPanel.style.display = 'block';
-                targetCard.classList.add('sub-active');
+            // अगर बैक बटन पहले से नहीं है, तो जोड़ना
+            if(!targetPanel.querySelector('.btn-subject-back')) {
+                const backBtn = document.createElement('div');
+                backBtn.className = 'btn-subject-back';
+                backBtn.style.cssText = "margin-bottom: 15px; cursor: pointer; color: #0b1e47; font-weight: bold; font-size: 14px;";
+                backBtn.innerHTML = "⬅️ दूसरे विषय चुनें (Back to Subjects)";
+                backBtn.onclick = resetSubjectGrid;
+                targetPanel.insertBefore(backBtn, targetPanel.firstChild);
             }
         }
+    }
 
-        function hideAllSubPanels() {
-            allSubjects.forEach(sub => {
-                const formatted = sub.charAt(0).toUpperCase() + sub.slice(1);
-                const p = document.getElementById('panel' + formatted);
-                const c = document.getElementById('sub' + formatted);
-                if(p) p.style.display = 'none';
-                if(c) c.classList.remove('sub-active');
-            });
-        }
+    function resetSubjectGrid() {
+        // ग्रिड वापस दिखाना और सारे पैनल्स छुपाना
+        document.querySelector('.subject-grid').style.display = 'grid';
+        hideAllSubPanels();
+    }
 
-        function updateStatus() {
-            const now = new Date().getTime();
-            document.querySelectorAll('.test-card-timer').forEach(card => {
-                const startTimeAttr = card.getAttribute('data-start');
-                const endTimeAttr = card.getAttribute('data-end');
-                const link = card.getAttribute('data-link');
-                const msgBox = card.querySelector('.status-msg');
+    function hideAllSubPanels() {
+        allSubjects.forEach(sub => {
+            const formatted = sub.charAt(0).toUpperCase() + sub.slice(1);
+            const p = document.getElementById('panel' + formatted);
+            if(p) p.style.display = 'none';
+        });
+    }
 
-                if (!startTimeAttr || !endTimeAttr) return;
+    function updateStatus() {
+        const now = new Date().getTime();
+        document.querySelectorAll('.test-card-timer').forEach(card => {
+            const startTimeAttr = card.getAttribute('data-start');
+            const endTimeAttr = card.getAttribute('data-end');
+            const link = card.getAttribute('data-link');
+            const msgBox = card.querySelector('.status-msg');
 
-                const startTime = new Date(startTimeAttr).getTime();
-                const endTime = new Date(endTimeAttr).getTime();
+            if (!startTimeAttr || !endTimeAttr) return;
 
-                if (now < startTime) {
-                    msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
-                    card.style.pointerEvents = "none"; card.style.opacity = "0.7";
-                } else if (now >= startTime && now <= endTime) {
-                    msgBox.innerHTML = "<span style='color:green;'>🟢 Live</span>";
-                    card.style.pointerEvents = "auto"; card.style.opacity = "1"; card.style.cursor = "pointer";
-                    card.onclick = function() { window.location.href = link; };
-                } else {
-                    msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
-                    card.style.pointerEvents = "none"; card.style.opacity = "0.5"; card.onclick = null;
-                }
-            });
-        }
+            const startTime = new Date(startTimeAttr).getTime();
+            const endTime = new Date(endTimeAttr).getTime();
 
-        document.addEventListener("DOMContentLoaded", updateStatus);
-        setInterval(updateStatus, 1000);
-        updateStatus();
+            if (now < startTime) {
+                msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
+                card.style.pointerEvents = "none"; card.style.opacity = "0.7";
+            } else if (now >= startTime && now <= endTime) {
+                msgBox.innerHTML = "<span style='color:green;'>🟢 Live</span>";
+                card.style.pointerEvents = "auto"; card.style.opacity = "1"; card.style.cursor = "pointer";
+                card.onclick = function() { window.location.href = link; };
+            } else {
+                msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
+                card.style.pointerEvents = "none"; card.style.opacity = "0.5"; card.onclick = null;
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateStatus);
+    setInterval(updateStatus, 1000);
+    updateStatus();
     </script>
-</body>
-</html>
+    
