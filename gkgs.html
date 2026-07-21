@@ -1,1 +1,237 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GK / GS - Medhavi Study Point</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; padding-bottom: 40px; }
+        
+        .cbt-header { background-color: #0b1e47; color: white; padding: 20px 5%; text-align: center; border-bottom: 4px solid #ffcc00; }
+        .cbt-header h1 { margin: 0; font-size: 26px; color: #ffcc00; }
 
+        .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        .content-panel { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .panel-title { font-size: 22px; font-weight: 700; color: #0b1e47; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #ffcc00; padding-bottom: 8px; }
+        
+        /* टेस्ट लिस्ट ग्रिड - हमेशा 1 कॉलम */
+        .test-list { display: grid !important; grid-template-columns: 1fr !important; gap: 12px; }
+        .test-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; display: flex !important; justify-content: space-between !important; align-items: center !important; transition: 0.2s; }
+        .test-card:hover { background: #0b1e47; color: white; border-color: #0b1e47; }
+
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+        .subject-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 18px 10px; border-radius: 10px; font-weight: 600; text-align: center; cursor: pointer; transition: 0.2s; }
+        .subject-card:hover { background: #ffcc00; color: #0b1e47; border-color: #ffcc00; }
+        .subject-card.sub-active { background: #0b1e47; color: white; border-color: #0b1e47; }
+
+        .sub-panel { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 25px; display: none; }
+        .btn-back { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .btn-back:hover { color: #0b1e47; }
+    </style>
+</head>
+<body>
+
+    <div class="cbt-header">
+        <h1>MEDHAVI STUDY POINT</h1>
+    </div>
+
+    <div class="container">
+        <div class="content-panel">
+            <div class="panel-title">📕 GK / GS - Select Subject</div>
+            
+            <!-- विषय चयन ग्रिड -->
+            <div class="subject-grid">
+                <div class="subject-card" id="subPolity" onclick="toggleSubject('polity')">🏛️ Polity</div>
+                <div class="subject-card" id="subHistory" onclick="toggleSubject('history')">📜 History</div>
+                <div class="subject-card" id="subGeography" onclick="toggleSubject('geography')">🌍 Geography</div>
+                <div class="subject-card" id="subEconomics" onclick="toggleSubject('economics')">💰 Economics</div>
+                <div class="subject-card" id="subScience" onclick="toggleSubject('science')">🔬 Science</div>
+                <div class="subject-card" id="subEnvironment" onclick="toggleSubject('environment')">🌱 Environment</div>
+                <div class="subject-card" id="subComputer" onclick="toggleSubject('computer')">💻 Computer</div>
+                <div class="subject-card" id="subUPSpecial" onclick="toggleSubject('upspecial')">🏹 UP Special</div>
+            </div>
+
+            <!-- 1. Polity Panel (पूरे 41 टेस्ट्स) -->
+            <div id="panelPolity" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🏛️ Polity - Chapterwise Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test1.html"><span>📝 1. भारत का संवैधानिक इतिहास</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test2.html"><span>📝 2. संविधान सभा</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test3.html"><span>📝 3. संविधान की प्रस्तावना</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test4.html"><span>📝 4. संविधान की विशेषताएं</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test5.html"><span>📝 5. संविधान के स्रोत</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test6.html"><span>📝 6. संविधान के भाग</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test7.html"><span>📝 7. संविधान की अनुसूचियां</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test8.html"><span>📝 8. संविधान के अनुच्छेद</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test9.html"><span>📝 9. संघ और उसके राज्य क्षेत्र</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test10.html"><span>📝 10. नागरिकता</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test11.html"><span>📝 11. मूल अधिकार</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test12.html"><span>📝 12. राज्य के नीति निर्देशक तत्व</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test13.html"><span>📝 13. मूल कर्तव्य</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test14.html"><span>📝 14. भारतीय संसद</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test15.html"><span>📝 15. राष्ट्रपति</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test16.html"><span>📝 16. उपराष्ट्रपति</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test17.html"><span>📝 17. राज्यसभा</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test18.html"><span>📝 18. लोकसभा</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test19.html"><span>📝 19. प्रधानमंत्री</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test20.html"><span>📝 20. संघीय मन्त्रिपरिषद</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test21.html"><span>📝 21. भारत के प्रमुख पदाधिकारी</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test22.html"><span>📝 22. संसदीय समितियां</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test23.html"><span>📝 23. सर्वोच्च न्यायालय</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test24.html"><span>📝 24. उच्च न्यायालय</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test25.html"><span>📝 25. राज्यपाल</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test26.html"><span>📝 26. मुख्यमंत्री</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test27.html"><span>📝 27. विधान परिषद</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test28.html"><span>📝 28. विधानसभा</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test29.html"><span>📝 29. आयोग व परिषदें</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test30.html"><span>📝 30. निर्वाचन आयोग</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test31.html"><span>📝 31. केंद्र-राज्य संबंध</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test32.html"><span>📝 32. राजभाषा</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test33.html"><span>📝 33. आपात उपबन्ध</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test34.html"><span>📝 34. संघ राज्य क्षेत्रों का प्रशासन</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test35.html"><span>📝 35. राजनीतिक दल</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test36.html"><span>📝 36. भारतीय राजनीति में दबाव समूह</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test37.html"><span>📝 37. दल-बदल विरोधी कानून</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test38.html"><span>📝 38. पिछड़े वर्गों के संबंध में विशेष प्रावधान</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test39.html"><span>📝 39. पदाधिकारियों का अनुक्रम</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test40.html"><span>📝 40. संविधान संशोधन</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="polity/test41.html"><span>📝 41. पंचायती राज व्यवस्था</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 2. History Panel -->
+            <div id="panelHistory" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">📜 History - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="history/test1.html"><span>📝 History Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="history/test2.html"><span>📝 History Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="history/test3.html"><span>📝 History Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 3. Geography Panel -->
+            <div id="panelGeography" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🌍 Geography - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="geography/test1.html"><span>📝 Geography Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="geography/test2.html"><span>📝 Geography Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="geography/test3.html"><span>📝 Geography Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 4. Economics Panel -->
+            <div id="panelEconomics" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">💰 Economics - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="economics/test1.html"><span>📝 Economics Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="economics/test2.html"><span>📝 Economics Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="economics/test3.html"><span>📝 Economics Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 5. Science Panel -->
+            <div id="panelScience" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🔬 Science - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test1.html"><span>📝 Science Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test2.html"><span>📝 Science Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="science/test3.html"><span>📝 Science Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 6. Environment Panel -->
+            <div id="panelEnvironment" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🌱 Environment - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="environment/test1.html"><span>📝 Environment Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="environment/test2.html"><span>📝 Environment Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="environment/test3.html"><span>📝 Environment Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 7. Computer Panel -->
+            <div id="panelComputer" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">💻 Computer - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="computer/test1.html"><span>📝 Computer Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="computer/test2.html"><span>📝 Computer Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="computer/test3.html"><span>📝 Computer Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+            <!-- 8. UP Special Panel -->
+            <div id="panelUPSpecial" class="sub-panel">
+                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🏹 UP Special - Available Tests:</div>
+                <div class="test-list">
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="upspecial/test1.html"><span>📝 UP Special Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="upspecial/test2.html"><span>📝 UP Special Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="upspecial/test3.html"><span>📝 UP Special Test - 3</span><span class="status-msg">Loading...</span></a>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="tests.html" class="btn-back">🔙 सेक्शन्स लिस्ट पर वापस जाएं</a>
+    </div>
+
+    <script>
+        const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
+
+        function toggleSubject(subjectTarget) {
+            const formattedName = subjectTarget.charAt(0).toUpperCase() + subjectTarget.slice(1);
+            const targetPanel = document.getElementById('panel' + formattedName);
+            const targetCard = document.getElementById('sub' + formattedName);
+            
+            const isVisible = targetPanel.style.display === 'block';
+            hideAllSubPanels();
+
+            if(!isVisible) {
+                targetPanel.style.display = 'block';
+                targetCard.classList.add('sub-active');
+            }
+        }
+
+        function hideAllSubPanels() {
+            allSubjects.forEach(sub => {
+                const formatted = sub.charAt(0).toUpperCase() + sub.slice(1);
+                const p = document.getElementById('panel' + formatted);
+                const c = document.getElementById('sub' + formatted);
+                if(p) p.style.display = 'none';
+                if(c) c.classList.remove('sub-active');
+            });
+        }
+
+        function updateStatus() {
+            const now = new Date().getTime();
+            document.querySelectorAll('.test-card-timer').forEach(card => {
+                const startTimeAttr = card.getAttribute('data-start');
+                const endTimeAttr = card.getAttribute('data-end');
+                const link = card.getAttribute('data-link');
+                const msgBox = card.querySelector('.status-msg');
+
+                if (!startTimeAttr || !endTimeAttr) return;
+
+                const startTime = new Date(startTimeAttr).getTime();
+                const endTime = new Date(endTimeAttr).getTime();
+
+                if (now < startTime) {
+                    msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
+                    card.style.pointerEvents = "none"; card.style.opacity = "0.7";
+                } else if (now >= startTime && now <= endTime) {
+                    msgBox.innerHTML = "<span style='color:green;'>🟢 Live</span>";
+                    card.style.pointerEvents = "auto"; card.style.opacity = "1"; card.style.cursor = "pointer";
+                    card.onclick = function() { window.location.href = link; };
+                } else {
+                    msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
+                    card.style.pointerEvents = "none"; card.style.opacity = "0.5"; card.onclick = null;
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", updateStatus);
+        setInterval(updateStatus, 1000);
+        updateStatus();
+    </script>
+</body>
+</html>
