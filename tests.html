@@ -295,22 +295,26 @@
         const allSubjects = ['polity', 'history', 'geography', 'economics', 'science', 'environment', 'computer', 'upspecial'];
 
         function showSection(section) {
-            document.getElementById('btnHomeScience').classList.remove('active');
-            document.getElementById('btnGKGS').classList.remove('active');
-            document.getElementById('panelHomeScience').style.display = 'none';
-            document.getElementById('panelGKGS').style.display = 'none';
-            
-            // GK/GS के सारे सब-पैनल्स को बंद करना
-            hideAllSubPanels();
-            
-            if(section === 'homescience') {
-                document.getElementById('btnHomeScience').classList.add('active');
-                document.getElementById('panelHomeScience').style.display = 'block';
-            } else if(section === 'gkgs') {
-                document.getElementById('btnGKGS').classList.add('active');
-                document.getElementById('panelGKGS').style.display = 'block';
-            }
+    // 1. दोनों बटन की एक्टिव क्लास हटाओ
+    document.getElementById('btnHomeScience').classList.remove('active');
+    document.getElementById('btnGKGS').classList.remove('active');
+    
+    // 2. दोनों मुख्य पैनल बंद करो
+    var panelHS = document.getElementById('panelHomeScience');
+    var panelGK = document.getElementById('panelGKGS');
+    if (panelHS) panelHS.style.display = 'none';
+    if (panelGK) panelGK.style.display = 'none';
+
+    // 3. जो सेक्शन चुना गया है उसे खोलो
+    if (section === 'homescience') {
+        document.getElementById('btnHomeScience').classList.add('active');
+        if (panelHS) panelHS.style.display = 'block';
+    } else if (section === 'gkgs') {
+        document.getElementById('btnGKGS').classList.add('active');
+        if (panelGK) panelGK.style.display = 'block';
+    }
         }
+        
 
         // किसी एक विषय पर क्लिक करने का डायनामिक फंक्शन
         function toggleSubject(subjectTarget) {
