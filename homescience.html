@@ -22,11 +22,15 @@
         .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
         .subject-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 18px 10px; border-radius: 10px; font-weight: 600; text-align: center; cursor: pointer; transition: 0.2s; }
         .subject-card:hover { background: #ffcc00; color: #0b1e47; border-color: #ffcc00; }
-        .subject-card.sub-active { background: #0b1e47; color: white; border-color: #0b1e47; }
 
-        .sub-panel { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 25px; display: none; }
-        .btn-back { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; }
-        .btn-back:hover { color: #0b1e47; }
+        .sub-panel { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 15px; display: none; }
+        
+        /* छोटा बैक बटन स्टाइल */
+        .btn-mini-back { display: inline-block; margin-top: 20px; padding: 8px 18px; background-color: #0b1e47; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-mini-back:hover { background-color: #1e3a8a; }
+
+        .btn-back-home { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .btn-back-home:hover { color: #0b1e47; }
     </style>
 </head>
 <body>
@@ -37,130 +41,135 @@
 
     <div class="container">
         <div class="content-panel">
-            <div class="panel-title">📘 Home Science - Select Category</div>
+            <div class="panel-title" id="pageMainTitle">📘 Home Science - Select Category</div>
             
             <div class="subject-grid">
-                <div class="subject-card" id="subHSDaily" onclick="toggleHSSection('daily')">📅 Daily Mock Test</div>
-                <div class="subject-card" id="subHSTgtPgt" onclick="toggleHSSection('tgtpgt')">🎯 TGT / PGT</div>
-                <div class="subject-card" id="subHSNetPyq" onclick="toggleHSSection('netpyq')">📜 NET / JRF PYQ</div>
-                <div class="subject-card" id="subHSNetMock" onclick="toggleHSSection('netmock')">🏆 NET / JRF Mock Test</div>
+                <div class="subject-card" onclick="toggleHSSection('daily', '📅 Daily Mock Test')">📅 Daily Mock Test</div>
+                <div class="subject-card" onclick="toggleHSSection('tgtpgt', '🎯 TGT / PGT')">🎯 TGT / PGT</div>
+                <div class="subject-card" onclick="toggleHSSection('netpyq', '📜 NET / JRF PYQ')">📜 NET / JRF PYQ</div>
+                <div class="subject-card" onclick="toggleHSSection('netmock', '🏆 NET / JRF Mock Test')">🏆 NET / JRF Mock Test</div>
             </div>
 
             <!-- 1. Daily Mock Test Panel -->
             <div id="panelHSDaily" class="sub-panel">
-                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">📅 Daily Mock Test - Available Tests:</div>
                 <div class="test-list">
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test1.html"><span>📝 Mock Test - 1</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test2.html"><span>📝 Mock Test - 2</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test3.html"><span>📝 Mock Test - 3</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test1.html"><span>📝 Mock Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test2.html"><span>📝 Mock Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/daily/test3.html"><span>📝 Mock Test - 3</span><span class="status-msg">Loading...</span></a>
                 </div>
+                <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
 
             <!-- 2. TGT / PGT Panel -->
             <div id="panelHSTgtPgt" class="sub-panel">
-                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🎯 TGT / PGT - Available Tests:</div>
                 <div class="test-list">
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/tgtpgt/test1.html"><span>📝 TGT/PGT Test - 1</span><span class="status-msg">Loading...</span></a>
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2027-12-31T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/tgtpgt/test2.html"><span>📝 TGT/PGT Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/tgtpgt/test1.html"><span>📝 TGT/PGT Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/tgtpgt/test2.html"><span>📝 TGT/PGT Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/tgtpgt/test3.html"><span>📝 TGT/PGT Test - 3</span><span class="status-msg">Loading...</span></a>
                 </div>
+                <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
 
             <!-- 3. NET PYQ Panel -->
             <div id="panelHSNetPyq" class="sub-panel">
-                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">📜 NET / JRF Previous Year Papers:</div>
                 <div class="test-list">
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netpyq/test1.html"><span>📝 NET/JRF Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netpyq/test1.html"><span>📝 NET/JRF Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netpyq/test2.html"><span>📝 NET/JRF Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netpyq/test3.html"><span>📝 NET/JRF Test - 3</span><span class="status-msg">Loading...</span></a>
                 </div>
+                <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
 
             <!-- 4. NET Mock Panel -->
             <div id="panelHSNetMock" class="sub-panel">
-                <div style="font-weight: 700; color: #0b1e47; margin-bottom: 12px;">🏆 NET / JRF Mock Tests:</div>
                 <div class="test-list">
-                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2026-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netmock/test1.html"><span>📝 NET/JRF Mock Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netmock/test1.html"><span>📝 NET/JRF Mock Test - 1</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netmock/test2.html"><span>📝 NET/JRF Mock Test - 2</span><span class="status-msg">Loading...</span></a>
+                    <a href="javascript:void(0);" class="test-card test-card-timer" data-start="2028-01-01T12:00:00" data-end="2030-01-01T00:00:00" data-link="homescience/netmock/test3.html"><span>📝 NET/JRF Mock Test - 3</span><span class="status-msg">Loading...</span></a>
                 </div>
+                <button class="btn-mini-back" onclick="triggerBack()">⬅️ Back</button>
             </div>
 
         </div>
 
-        <a href="tests.html" class="btn-back">🔙 सेक्शन्स लिस्ट पर वापस जाएं</a>
+        <a href="tests.html" class="btn-back-home">🔙 सेक्शन्स लिस्ट पर वापस जाएं</a>
     </div>
 
     <script>
-    function toggleHSSection(secTarget) {
-        const secMap = {
-            'daily': 'panelHSDaily',
-            'tgtpgt': 'panelHSTgtPgt',
-            'netpyq': 'panelHSNetPyq',
-            'netmock': 'panelHSNetMock'
+        const defaultTitle = "📘 Home Science - Select Category";
+
+        function toggleHSSection(secTarget, secTitle) {
+            const secMap = {
+                'daily': 'panelHSDaily',
+                'tgtpgt': 'panelHSTgtPgt',
+                'netpyq': 'panelHSNetPyq',
+                'netmock': 'panelHSNetMock'
+            };
+
+            document.getElementById('pageMainTitle').innerHTML = secTitle + " - Select Test";
+            document.querySelector('.subject-grid').style.display = 'none';
+            hideAllSubPanels();
+
+            const panelId = secMap[secTarget];
+            const targetPanel = document.getElementById(panelId);
+            if(targetPanel) {
+                targetPanel.style.display = 'block';
+            }
+
+            history.pushState({ subView: true }, "");
+        }
+
+        function triggerBack() {
+            history.back();
+        }
+
+        function resetHSGrid() {
+            document.getElementById('pageMainTitle').innerHTML = defaultTitle;
+            document.querySelector('.subject-grid').style.display = 'grid';
+            hideAllSubPanels();
+        }
+
+        function hideAllSubPanels() {
+            ['HSDaily', 'HSTgtPgt', 'HSNetPyq', 'HSNetMock'].forEach(sec => {
+                const p = document.getElementById('panel' + sec);
+                if(p) p.style.display = 'none';
+            });
+        }
+
+        window.onpopstate = function(event) {
+            resetHSGrid();
         };
 
-        // 1. कैटेगरी ग्रिड को छुपाना
-        document.querySelector('.subject-grid').style.display = 'none';
+        function updateStatus() {
+            const now = new Date().getTime();
+            document.querySelectorAll('.test-card-timer').forEach(card => {
+                const startTimeAttr = card.getAttribute('data-start');
+                const endTimeAttr = card.getAttribute('data-end');
+                const link = card.getAttribute('data-link');
+                const msgBox = card.querySelector('.status-msg');
 
-        // 2. सारे पैनल्स छुपाना
-        hideAllSubPanels();
+                if (!startTimeAttr || !endTimeAttr) return;
 
-        // 3. चुने हुए पैनल को दिखाना
-        const panelId = secMap[secTarget];
-        const targetPanel = document.getElementById(panelId);
+                const startTime = new Date(startTimeAttr).getTime();
+                const endTime = new Date(endTimeAttr).getTime();
 
-        if(targetPanel) {
-            targetPanel.style.display = 'block';
-
-            // बैक बटन जोड़ना
-            if(!targetPanel.querySelector('.btn-subject-back')) {
-                const backBtn = document.createElement('div');
-                backBtn.className = 'btn-subject-back';
-                backBtn.style.cssText = "margin-bottom: 15px; cursor: pointer; color: #0b1e47; font-weight: bold; font-size: 14px;";
-                backBtn.innerHTML = "⬅️ दूसरी कैटेगरी चुनें (Back to Categories)";
-                backBtn.onclick = resetHSGrid;
-                targetPanel.insertBefore(backBtn, targetPanel.firstChild);
-            }
+                if (now < startTime) {
+                    msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
+                    card.style.pointerEvents = "none"; card.style.opacity = "0.7";
+                } else if (now >= startTime && now <= endTime) {
+                    msgBox.innerHTML = "<span style='color:green;'>🟢 Live</span>";
+                    card.style.pointerEvents = "auto"; card.style.opacity = "1"; card.style.cursor = "pointer";
+                    card.onclick = function() { window.location.href = link; };
+                } else {
+                    msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
+                    card.style.pointerEvents = "none"; card.style.opacity = "0.5"; card.onclick = null;
+                }
+            });
         }
-    }
 
-    function resetHSGrid() {
-        document.querySelector('.subject-grid').style.display = 'grid';
-        hideAllSubPanels();
-    }
-
-    function hideAllSubPanels() {
-        ['HSDaily', 'HSTgtPgt', 'HSNetPyq', 'HSNetMock'].forEach(sec => {
-            const p = document.getElementById('panel' + sec);
-            if(p) p.style.display = 'none';
-        });
-    }
-
-    function updateStatus() {
-        const now = new Date().getTime();
-        document.querySelectorAll('.test-card-timer').forEach(card => {
-            const startTimeAttr = card.getAttribute('data-start');
-            const endTimeAttr = card.getAttribute('data-end');
-            const link = card.getAttribute('data-link');
-            const msgBox = card.querySelector('.status-msg');
-
-            if (!startTimeAttr || !endTimeAttr) return;
-
-            const startTime = new Date(startTimeAttr).getTime();
-            const endTime = new Date(endTimeAttr).getTime();
-
-            if (now < startTime) {
-                msgBox.innerHTML = "<span style='color:orange;'>⏳ Coming Soon</span>";
-                card.style.pointerEvents = "none"; card.style.opacity = "0.7";
-            } else if (now >= startTime && now <= endTime) {
-                msgBox.innerHTML = "<span style='color:green;'>🟢 Live</span>";
-                card.style.pointerEvents = "auto"; card.style.opacity = "1"; card.style.cursor = "pointer";
-                card.onclick = function() { window.location.href = link; };
-            } else {
-                msgBox.innerHTML = "<span style='color:red;'>🚫 Test Over</span>";
-                card.style.pointerEvents = "none"; card.style.opacity = "0.5"; card.onclick = null;
-            }
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", updateStatus);
-    setInterval(updateStatus, 1000);
-    updateStatus();
+        document.addEventListener("DOMContentLoaded", updateStatus);
+        setInterval(updateStatus, 1000);
+        updateStatus();
     </script>
-    
+</body>
+</html>
