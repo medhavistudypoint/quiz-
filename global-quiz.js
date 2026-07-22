@@ -129,7 +129,8 @@ function displayQuestionCard(idx) {
     }
 
     document.getElementById('lblCurrentNum').innerText = idx + 1;
-    document.getElementById('boxQuestionText').innerText = item.question;
+    document.getElementById('boxQuestionText').innerHTML = item.question;
+    
     
     const optionsWrapper = document.getElementById('boxOptionsList');
     optionsWrapper.innerHTML = '';
