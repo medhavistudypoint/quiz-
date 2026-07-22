@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medhavi Study Point - Home Science & Polity Test</title>
+    <title>Medhavi Study Point - Home Science Test</title>
     <!-- CSS कंट्रोल फ़ाइल -->
     <link rel="stylesheet" href="../global-style.css?v=3.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -20,7 +20,7 @@
 
     <!-- 1. लॉगिन गेट स्क्रीन -->
     <div id="boxLoginGate" class="login-card">
-        <h2>Medhavi Study Point Gate</h2>
+        <h2>Medhavi Home Science Test Gate</h2>
         <p>कृपया अपना पूरा नाम दर्ज करें और टेस्ट शुरू करें.</p>
         <input type="text" id="txtStudentName" placeholder="अपना नाम यहाँ लिखें..." required>
         <button class="btn-main-action" onclick="validateAndStartQuiz()">परीक्षा शुरू करें 🚀</button>
@@ -34,7 +34,7 @@
         <div class="cbt-header" style="background: #0b1e47; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
             <div class="header-left">
                 <h1 style="color: #facc15; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">MEDHAVI STUDY POINT</h1>
-                <p style="color: #ffffff; font-size: 13px; margin: 3px 0 0 0; opacity: 0.9;">UPSC / UPPSC / Practice Series</p>
+                <p style="color: #ffffff; font-size: 13px; margin: 3px 0 0 0; opacity: 0.9;">UPSC / UPPSC / Home Science Series</p>
             </div>
             <div class="timer-box" id="countdownTimer" style="background: #1e3a8a; border: 2px solid #3b82f6; color: #facc15; padding: 6px 16px; border-radius: 8px; font-size: 20px; font-weight: 800; letter-spacing: 1px;">40:00</div>
         </div>
@@ -43,7 +43,7 @@
             <div class="card-panel">
                 <div class="meta-row">
                     <span class="q-badge">प्रश्न: <span id="lblCurrentNum">1</span> / <span id="lblTotalNum">50</span></span>
-                    <span class="subject-badge">गृह विज्ञान एवं सामान्य अध्ययन</span>
+                    <span class="subject-badge">गृह विज्ञान (Home Science)</span>
                 </div>
                 <div id="boxQuestionText" class="question-text">प्रश्न लोड हो रहा है...</div>
                 <div id="boxOptionsList"></div>
@@ -65,7 +65,7 @@
     <!-- 3. रिपोर्ट डैशबोर्ड स्क्रीन -->
     <div id="boxReportDashboard" class="report-view">
         <div id="captureTarget" style="padding: 25px; background: white; border-radius: 12px;">
-            <div class="report-header-title">Medhavi Study Point — Result Dashboard</div>
+            <div class="report-header-title">Medhavi Study Point — Home Science Result Dashboard</div>
             <p id="lblReportStudentName" style="font-size: 18px; font-weight: bold; text-align: center; color: #0b1e47; margin-bottom: 20px;"></p>
             <div class="grid-5-columns">
                 <div class="metric-card-wrapper"><div class="metric-card m-blue"><div id="valNetScore" class="metric-val">0 / 50</div><div class="metric-title">Score</div></div></div>
@@ -83,14 +83,14 @@
     <!-- 🎯 टेस्ट डेटासेट और QUIZ_KEY -->
     <script>
         // 1. इस टेस्ट की यूनिक KEY
-        const QUIZ_KEY = "medhavi_practice_test_50"; 
+        const QUIZ_KEY = "medhavi_homescience_test_50"; 
 
-        // 2. 50 प्रश्नों का संपूर्ण डेटासेट (क्रम 1 से 50)
+        // 2. 50 प्रश्नों का त्रुटिरहित संपूर्ण डेटासेट (क्रम 1 से 50)
         const dataset = [
             { id: 1, question: "यह अप्रत्यक्ष आय है:", options: ["(a) जमा धनराशि का ब्याज", "(b) नि:शुल्क आवास", "(c) वेतन", "(d) कृषि से प्राप्त आय"], correct: 1 },
             { id: 2, question: "पर्यावरण प्रदूषण का प्रभाव पड़ता है:", options: ["(a) जनस्वास्थ्य पर", "(b) व्यक्तिगत कार्यक्षमता पर", "(c) आर्थिक जीवन पर", "(d) उपर्युक्त सभी"], correct: 3 },
             { id: 3, question: "संक्रामक रोगों से बचाव किया जा सकता है:", options: ["(a) प्रातःकाल धूप में बैठकर", "(b) संतुलित आहार द्वारा", "(c) नियमित व्यायाम द्वारा", "(d) टीकाकरण द्वारा"], correct: 3 },
-            { id: 4, question: "नेत्रों के लिए कौन-सा पौष्टिक तत्त्व आवश्यक है?", options: ["(a) विटामिन ‘ए’", "(b) विटामिन ‘बी’", "(c) विटामिन ‘सी’", "(d) विटामिन ‘के’"], correct: 0 },
+            { id: 4, question: "नेत्रों के लिए कौन-सा पौष्टिक तत्त्व आवश्यक है?", options: ["(a) विटामिन 'ए'", "(b) विटामिन 'बी'", "(c) विटामिन 'सी'", "(d) विटामिन 'के'"], correct: 0 },
             { id: 5, question: "एक दर्जन अमरूद का मूल्य ₹60 है, तो एक अमरूद का मूल्य क्या होगा?", options: ["(a) ₹5.00", "(b) ₹7.00", "(c) ₹9.00", "(d) ₹12.00"], correct: 0 },
             { id: 6, question: "कपड़ा काटने से पूर्व ध्यान रखना चाहिए:", options: ["(a) कपड़े को श्रिंक करना (सिकुड़ना)", "(b) कपड़े को स्त्री करना", "(c) मिल्टन चौक से निशान लगाना", "(d) उपर्युक्त सभी"], correct: 3 },
             { id: 7, question: "भोजन पकाने की कौन-सी विधि पौष्टिक तत्त्वों को सुरक्षित रखती है?", options: ["(a) भाप द्वारा पकाना", "(b) तलना", "(c) उबालना", "(d) भूनना"], correct: 0 },
@@ -101,7 +101,7 @@
             { id: 12, question: "क्षय रोगी के लिए हानिकारक है:", options: ["(a) दूध", "(b) सन्तुलित आहार", "(c) फल का रस", "(d) मसालेदार भोजन"], correct: 3 },
             { id: 13, question: "पूर्ण तरल आहार है:", options: ["(a) दूध", "(b) चाय", "(c) दाल", "(d) उपर्युक्त में से कोई नहीं"], correct: 0 },
             { id: 14, question: "पारिवारिक आवश्यकताओं की पूर्ति के लिए उपयोग किए जाने वाले धन को कहते हैं:", options: ["(a) पारिवारिक आय", "(b) पारिवारिक व्यय", "(c) पारिवारिक बचत", "(d) पारिवारिक बजट"], correct: 1 },
-            { id: 15, question: "खाने का सोडा मिलाकर पकाने से खाद्य-सामग्री का नष्ट होने वाला पौष्टिक तत्त्व है:", options: ["(a) विटामिन ‘ए’", "(b) विटामिन ‘बी’", "(c) कार्बोहाइड्रेट", "(d) प्रोटीन"], correct: 1 },
+            { id: 15, question: "खाने का सोडा मिलाकर पकाने से खाद्य-सामग्री का नष्ट होने वाला पौष्टिक तत्त्व है:", options: ["(a) विटामिन 'ए'", "(b) विटामिन 'बी'", "(c) कार्बोहाइड्रेट", "(d) प्रोटीन"], correct: 1 },
             { id: 16, question: "पारिवारिक बजट का मुख्य घटक नहीं है:", options: ["(a) भोजन", "(b) शिक्षा", "(c) मकान", "(d) फैशन"], correct: 3 },
             { id: 17, question: "शुद्ध जल में अभाव होता है:", options: ["(a) रंग का", "(b) गन्ध का", "(c) स्वाद का", "(d) उपर्युक्त सभी"], correct: 3 },
             { id: 18, question: "मक्खियों द्वारा फैलने वाला रोग है:", options: ["(a) हैजा", "(b) मलेरिया", "(c) प्लेग", "(d) रेबीज़"], correct: 0 },
@@ -158,4 +158,4 @@
     <!-- JS लॉजिक कंट्रोल फ़ाइल -->
     <script src="../global-quiz.js?v=3.0"></script>
 </body>
-  </html>
+</html>
