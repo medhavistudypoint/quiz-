@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medhavi Study Point - Home Science Test</title>
+    <!-- ✅ सही किया गया CSS कंट्रोल फ़ाइल का पाथ -->
+    <link rel="stylesheet" href="../../global-style.css?v=3.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <!-- सुरक्षा वॉटरमार्क स्क्रीन -->
+    <div class="watermark-overlay">
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+        <div class="watermark-text">MEDHAVI STUDY POINT</div>
+    </div>
+
+    <!-- 1. लॉगिन गेट स्क्रीन -->
+    <div id="boxLoginGate" class="login-card">
+        <h2>Medhavi Home Science Test Gate</h2>
+        <p>कृपया अपना पूरा नाम दर्ज करें और टेस्ट शुरू करें.</p>
+        <input type="text" id="txtStudentName" placeholder="अपना नाम यहाँ लिखें..." required>
+        <button class="btn-main-action" onclick="validateAndStartQuiz()">परीक्षा शुरू करें 🚀</button>
+        <br><br>
+        <!-- ✅ सही किया गया बैक बटन का पाथ -->
+        <a href="../../homescience.html" style="color:#64748b; font-weight:600; text-decoration:none;">🔙 विषय चयन पर वापस जाएं</a>
+    </div>
+
+    <!-- 2. परीक्षा वर्कस्पेस स्क्रीन -->
+    <div id="quizWorkspace" class="hidden">
+        <!-- 🌟 प्रीमियम हेडर -->
+        <div class="cbt-header" style="background: #0b1e47; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="header-left">
+                <h1 style="color: #facc15; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">MEDHAVI STUDY POINT</h1>
+                <p style="color: #ffffff; font-size: 13px; margin: 3px 0 0 0; opacity: 0.9;">UPSC / UPPSC / Home Science Series</p>
+            </div>
+            <div class="timer-box" id="countdownTimer" style="background: #1e3a8a; border: 2px solid #3b82f6; color: #facc15; padding: 6px 16px; border-radius: 8px; font-size: 20px; font-weight: 800; letter-spacing: 1px;">40:00</div>
+        </div>
+
+        <div class="main-container">
+            <div class="card-panel">
+                <div class="meta-row">
+                    <span class="q-badge">प्रश्न: <span id="lblCurrentNum">1</span> / <span id="lblTotalNum">57</span></span>
+                    <span class="subject-badge">गृह विज्ञान (Home Science)</span>
+                </div>
+                <div id="boxQuestionText" class="question-text">प्रश्न लोड हो रहा है...</div>
+                <div id="boxOptionsList"></div>
+                <div class="btn-tri-grid">
+                    <button class="btn btn-prev" onclick="doNavigatePrev()">◀ पिछला</button>
+                    <button class="btn btn-clear" onclick="doClearAnswer()">Clear</button>
+                    <button class="btn btn-mark" onclick="doToggleMark()">⭐ Mark</button>
+                </div>
+                <button id="btnMainNav" class="btn-main-action" onclick="handleMainAction()">अगला ▶</button>
+            </div>
+            <div class="card-panel">
+                <div class="palette-heading">प्रश्न पैलेट ग्रिड</div>
+                <div id="boxPaletteGrid" class="grid-matrix"></div>
+                <button class="btn-submit-trigger" onclick="triggerTestSubmission()">✔ Submit Test</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. रिपोर्ट डैशबोर्ड स्क्रीन -->
+    <div id="boxReportDashboard" class="report-view">
+        <div id="captureTarget" style="padding: 25px; background: white; border-radius: 12px;">
+            <div class="report-header-title">Medhavi Study Point — Home Science Result Dashboard</div>
+            <p id="lblReportStudentName" style="font-size: 18px; font-weight: bold; text-align: center; color: #0b1e47; margin-bottom: 20px;"></p>
+            <div class="grid-5-columns">
+                <div class="metric-card-wrapper"><div class="metric-card m-blue"><div id="valNetScore" class="metric-val">0 / 57</div><div class="metric-title">Score</div></div></div>
+                <div class="metric-card-wrapper"><div class="metric-card m-green"><div id="valCorrectCount" class="metric-val">0</div><div class="metric-title">Correct</div></div></div>
+                <div class="metric-card-wrapper"><div class="metric-card m-red"><div id="valIncorrectCount" class="metric-val">0</div><div class="metric-title">Incorrect</div></div></div>
+                <div class="metric-card-wrapper"><div class="metric-card m-orange"><div id="valSkippedCount" class="metric-val">0</div><div class="metric-title">Skipped</div></div></div>
+                <div class="metric-card-wrapper"><div class="metric-card m-purple"><div id="valTimeConsumed" class="metric-val">00:00</div><div class="metric-title">Time</div></div></div>
+            </div>
+        </div>
+        <button class="btn-telegram-share" onclick="captureCardAndOpenGroup()">📸 रिजल्ट इमेज कॉपी करें</button>
+        <!-- ✅ सही किया गया डैशबोर्ड का बैक बटन -->
+        <a href="../../homescience.html" class="btn-dashboard-redirect">🔙 मुख्य डैशबोर्ड पर वापस जाएं</a>
+        <div id="boxReviewAnswersList"></div>
+    </div>
+
+    <!-- 🎯 टेस्ट डेटासेट और QUIZ_KEY -->
+    <script>
+        // 1. इस टेस्ट की यूनिक KEY
+        const QUIZ_KEY = "medhavi_homescience_test_2d"; 
+
+        // 2. 57 प्रश्नों का त्रुटिरहित संपूर्ण डेटासेट (क्रम 1 से 57)
+        const dataset = [
+            { 
+                id: 1, 
+                question: "विद्युत तापीय उपकरणों में थर्मोस्टेट का कार्य है-", 
+                options: ["(a) ऊष्मा संचरण", "(b) ताप संवाहन", "(c) ऊष्मा नियंत्रण", "(d) इनमें से कोई नहीं"], 
+                correct: 2 
+            },
+            { 
+                id: 2, 
+                question: "एक हल्का कार्य करने वाली स्त्री के लिये ऊर्जा की संस्तुत आहारीय आवश्यकता है-", 
+                options: ["(a) 1275 किलो कैलोरी", "(b) 1450 किलो कैलोरी", "(c) 1650 किलो कैलोरी", "(d) 1875 किलो कैलोरी"], 
+                correct: 3 
+            },
+            { 
+                id: 3, 
+                question: "एक स्नैक जो देता है 12 ग्राम कार्बोहाइड्रेट एवं 3 ग्राम वसा, वह शरीर को कितनी किलोकैलोरीज देगा?", 
+                options: ["(a) 60 किलोकैलोरीज", "(b) 135 किलोकैलोरीज", "(c) 75 किलोकैलोरीज", "(d) इनमें से कोई नहीं"], 
+                correct: 2 
+            },
+            { 
+                id: 4, 
+                question: "शरीर के तापक्रम में 1°F परिवर्तन होने में ऊर्जा ह्रास होती है-", 
+                options: ["(a) 2%", "(b) 4%", "(c) 5%", "(d) 7%"], 
+                correct: 3 
+            },
+            { 
+                id: 5, 
+                question: "बी. एम. आर. के बारे में गलत कथन को चुनिये:", 
+                options: ["(a) बी एम आर शरीर के सतही क्षेत्र से संबंधित है।", "(b) बी.एम.आर. व्यक्ति की उम्र के व्युत्क्रमानुपाती है।", "(c) बी एम आर गर्म जलवायु में बढ़ जाता है।", "(d) पुरुषों का बी एम आर उसी उम्र की महिलाओं की अपेक्षा उच्च होता है।"], 
+                correct: 2 
+            },
+            { 
+                id: 6, 
+                question: "निम्नलिखित को मिलाइए :<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>(A) भोजन संक्रमण</td><td>1. माइकोटॉक्सिन</td></tr><tr><td>(B) विषाक्त रसायन</td><td>2. सूक्ष्मजीव</td></tr><tr><td>(C) सीसा विषाक्तता</td><td>3. कीटनाशक</td></tr><tr><td>(D) कवक</td><td>4. भोजन के जरिए विषाणु संक्रमण</td></tr><tr><td>(E) संक्रमणीय हेपेटाइटिस</td><td>5. बर्तन</td></tr></table><br>कूट:", 
+                options: ["(a) A-1, B-2, C-3, D-4, E-5", "(b) A-5, B-4, C-3, D-2, E-1", "(c) A-2, B-3, C-5, D-1, E-4", "(d) A-3, B-4, C-5, D-2, E-1"], 
+                correct: 2 
+            },
+            { 
+                id: 7, 
+                question: "एसिटामिनोफेन विषाक्तता जो सबसे आम दवा है इनमें से किस की विफलता का कारण है?", 
+                options: ["(a) फेफड़े", "(b) किडनी", "(c) लिवर", "(d) मस्तिष्क"], 
+                correct: 2 
+            },
+            { 
+                id: 8, 
+                question: "जैम और जेली में बढ़ने वाले उस जीव का नाम बताएं, जिसमें कम मुक्त ऑक्सीजन की आवश्यकता होती है।", 
+                options: ["(a) प्रोटोज़ोआ", "(b) मोल्ड्स", "(c) बैक्टीरिया", "(d) वायरस"], 
+                correct: 1 
+            },
+            { 
+                id: 9, 
+                question: "E. coli है-", 
+                options: ["(a) ग्राम-पॉजिटिव बैक्टीरिया", "(b) ग्राम-निगेटिव बैक्टीरिया", "(c) न्यूट्रल बैक्टीरिया", "(d) उपर्युक्त सभी"], 
+                correct: 1 
+            },
+            { 
+                id: 10, 
+                question: "निम्न में से कौन-सा बैक्टीरिया क्षारीय pH में वृद्धि करता है?", 
+                options: ["(a) लैक्टोबैसिली", "(b) वाइब्रियो कॉलेरा", "(c) साल्मोनेला", "(d) स्टैफाइलोकोकस"], 
+                correct: 1 
+            },
+            { 
+                id: 11, 
+                question: "पाश्चुरीकरण मुख्यतः किया जाता है-", 
+                options: ["(a) सभी सूक्ष्म जीवाणुओं को नष्ट करने के लिए", "(b) रोग पैदा करने वाले सूक्ष्म जीवाणुओं को नष्ट करने के लिए", "(c) एनजाइम को निष्क्रिय करने के लिए।", "(d) अशुद्धियों को निकालने के लिए।"], 
+                correct: 1 
+            },
+            { 
+                id: 12, 
+                question: "निम्नलिखित में से कौन सा सूक्ष्म जीवों खाद्य जनित जहर का कारण है?<br>(A) स्टेफ़्लोकाकस<br>(B) ई कोलाई<br>(C) क्लोस्ट्रिडियम बोटुलिनम<br>(D) लिस्टेरिया<br><br>कूट:", 
+                options: ["(a) (A) और (B)", "(b) (A) और (C)", "(c) (C) और (D)", "(d) (D) और (A)"], 
+                correct: 1 
+            },
+            { 
+                id: 13, 
+                question: "सूची-I में दिए गए सूक्ष्मजीवी को सूची-II में दिए गए खाद्यजन्य रोग की स्थिति से सुमेलित कीजिए:<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>A. सालमोनेला</td><td>i. संग्रहणी</td></tr><tr><td>B. शिगेला</td><td>ii. एमोइबिक संग्रहणी</td></tr><tr><td>C. क्लोस्ट्रिडियम</td><td>iii. यक्ष्मा (टी.बी.)</td></tr><tr><td>D. प्रोटोज़ोआ</td><td>iv. हेपेटाइटिस</td></tr><tr><td>E. वायरस</td><td>v. आंत्र ज्वर</td></tr><tr><td></td><td>vi. बोटुलिज्म</td></tr></table><br>कूट:", 
+                options: ["(a) A-ii, B-v, C-i, D-vi, E-iii", "(b) A-v, B-iii, C-ii, D-vi, E-iv", "(c) A-v, B-i, C-vi, D-ii, E-iv", "(d) A-i, B-v, C-ii, D-iii, E-iv"], 
+                correct: 2 
+            },
+            { 
+                id: 14, 
+                question: "अभिकथन (A): एंटीऑक्सीडेंट पोषक आहार में विषाक्तता को कम कर सकता है और संभावित स्वास्थ्य लाभों को अधिकतम कर सकता है।<br>कारण (R): फल और सब्जियों के पोषक वाले आहारों से आर.डी.ए. के स्तरों से उच्च स्तरों पर विटामिन ए, विटामिन सी और विटामिन ई आदि मिलता है।<br><br>कूट:", 
+                options: ["(a) (A) गलत है और (R) सही है।", "(b) (A) सही है लेकिन (R) गलत है।", "(c) (A) सही है और (R) सही व्याख्या है।", "(d) (A) सही है लेकिन (R) गलत व्याख्या है।"], 
+                correct: 3 
+            },
+            { 
+                id: 15, 
+                question: "सूची -I में दिए गए खाद्य पदार्थों को दूषित करने वाले जीवों को सूची - II में दिए गए खाद्य पदार्थों, जिसके द्वारा उनका स्थानान्तरण होता है, से सुमेलित करें :<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>I. टेनिया सोलियम</td><td>A. दूध और दुग्ध पदार्थ</td></tr><tr><td>II. क्लोस्ट्रिडियम बोटुलिनम</td><td>B. अण्डा, मांस उत्पाद</td></tr><tr><td>III. स्टेफिलोकोकस ऑरियस</td><td>C. सूअर मांस और इसके उत्पाद</td></tr><tr><td>IV. स्ट्रेप्टोकोकस</td><td>D. क्रीमयुक्त खाद्य पदार्थ</td></tr><tr><td>V. साल्मोनेला</td><td>E. फ्रीज़ की हुई सब्जियाँ</td></tr><tr><td></td><td>F. अचार</td></tr><tr><td></td><td>G. डिब्बाबन्द प्रोटीन खाद्य पदार्थ</td></tr></table><br>कोड:", 
+                options: ["(a) I-C, II-G, III-E, IV-B, V-F", "(b) I-C, II-G, III-D, IV-A, V-B", "(c) I-A, II-F, III-D, IV-A, V-E", "(d) I-E, II-C, III-A, IV-B, V-D"], 
+                correct: 1 
+            },
+            { 
+                id: 16, 
+                question: "सूची -I में दिए गए मदों को सूची - II में दिए खाद्य पदार्थों से सुमेलित करें :<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>I. डी. ओ. पी. ए.</td><td>A. अंडा</td></tr><tr><td>II. एक्रोलिन</td><td>B. मेवे</td></tr><tr><td>III. ग्लूटिन</td><td>C. सेब</td></tr><tr><td>IV. एफ्लाटॉक्सिन</td><td>D. दूध</td></tr><tr><td>V. फेरस सल्फाइड</td><td>E. अनाज</td></tr><tr><td></td><td>F. तेल</td></tr></table><br>कोड:", 
+                options: ["(a) I-C, II-F, III-E, IV-B, V-A", "(b) I-A, II-B, III-D, IV-E, V-F", "(c) I-B, II-C, III-E, IV-F, V-A", "(d) I-C, II-E, III-F, IV-D, V-B"], 
+                correct: 0 
+            },
+            { 
+                id: 17, 
+                question: "सूची-I में दिए गए जीवाणुओं को सूची - II में दिए गए खाद्य-पदार्थ से मिलाएँ जिनके द्वारा वे संचारित होते हैं।<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची - I</th><th>सूची - II</th></tr><tr><td>A. साल्मोनेला</td><td>1. कच्ची सब्जियाँ व सलाद</td></tr><tr><td>B. स्ट्रैप्टोकोकस</td><td>2. कम अम्लीय डिब्बाबन्द खाद्य-पदार्थ</td></tr><tr><td>C. क्लासिट्रिडियम बॉट्यूलाइनम्</td><td>3. निर्जलित सब्जियाँ</td></tr><tr><td>D. टिनिया सोलियम</td><td>4. अंडा व माँस उत्पाद</td></tr><tr><td>E. शीगेला</td><td>5. सूअर का माँस व उत्पाद</td></tr><tr><td></td><td>6. क्रीम व डेयरी उत्पाद</td></tr></table><br>कूट :", 
+                options: ["(a) A-3, B-4, C-2, D-1, E-5", "(b) A-4, B-6, C-2, D-5, E-1", "(c) A-4, B-1, C-3, D-5, E-2", "(d) A-3, B-5, C-2, D-6, E-1"], 
+                correct: 1 
+            },
+            { 
+                id: 18, 
+                question: "................. भोजनजन्य रोगों के कारणों में से एक है।", 
+                options: ["(a) सूक्ष्मजीवों से दूषित होना", "(b) ऊष्मायन", "(c) शोध", "(d) पेचिश"], 
+                correct: 0 
+            },
+            { 
+                id: 19, 
+                question: "म्यूकर, एस्परजीलस और एरगॉट जैसे कवक..........और......... के सामान्य दूषक हैं।", 
+                options: ["(a) सूअर और गाय का माँस", "(b) फीताकृमि और वलयकृमि", "(c) जीवाणु और विषाणु", "(d) डबलरोटी और अनाज"], 
+                correct: 3 
+            },
+            { 
+                id: 20, 
+                question: "भोजन संक्रमण भोजन में उपस्थित रोग जनक जीवाणुओं, रोगाणुओं को खा लेना है।", 
+                options: ["(a) असत्य", "(b) सत्य", "(c) संबंधित नहीं", "(d) संदेहास्पद"], 
+                correct: 1 
+            },
+            { 
+                id: 21, 
+                question: "साल्मोनेला भोजन विषाक्तता एक जीवाण्विक भोजन विषाक्तता है।", 
+                options: ["(a) सत्य", "(b) असत्य", "(c) संबंधित नहीं", "(d) विवादित"], 
+                correct: 0 
+            },
+            { 
+                id: 22, 
+                question: "अभिकथन (A): जिन खाद्य पदार्थों से, उनमें निहित पोषक तत्वों के सुस्थापित कार्यों से अतिरिक्त स्वास्थ्यवर्धक लाभ प्राप्त होते हैं उन्हें प्रकार्यात्मक खाद्य-पदार्थ (फंक्शनल फूड) कहते हैं।<br>कारण (R): प्रोबायोटिक, फ्लैवेनोइड्द्व, फाइटोस्टेरोल जैसे बायोऐक्टिव घटक तत्त्वों में स्वास्थ्यवर्धक प्रभाव होता है।<br><br>कूट:", 
+                options: ["(a) (A) सही है और (R) गलत है।", "(b) (A) तथा (R) दोनों गलत हैं।", "(c) (A) गलत है और (R) सही है।", "(d) (A) तथा (R) दोनों सही है और (R), (A) का सही स्पष्टीकरण है।"], 
+                correct: 3 
+            },
+            { 
+                id: 23, 
+                question: "सूची -I में दिए जीवाणु से सूची - II में दिए उनसे होने वाले विकारों से सुमेलित करें :<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>(A) साल्मोनेला</td><td>(i) मस्तिष्क में रसौली</td></tr><tr><td>(B) शीगेला</td><td>(ii) अमीबा से होने वाला पेचिश</td></tr><tr><td>(C) टैनिया सोलियम</td><td>(iii) मियादी बुखार</td></tr><tr><td>(D) प्रोटोज़ोआ</td><td>(iv) पेप्टिक अल्सर</td></tr><tr><td>(E) हेलीकोबैक्टर पायलोरी</td><td>(v) हेपेटाइटिस</td></tr><tr><td></td><td>(vi) पेचिश</td></tr></table><br>कूट :", 
+                options: ["(a) A-iii, B-vi, C-i, D-ii, E-iv", "(b) A-iii, B-v, C-vi, D-i, E-iv", "(c) A-i, B-ii, C-iii, D-iv, E-v", "(d) A-ii, B-iv, C-i, D-iii, E-v"], 
+                correct: 0 
+            },
+            { 
+                id: 24, 
+                question: "सूची-I में दिए गए जीवों को सूची-II में दिए गए उसके बीमारी फैलाने के साधन से मिलाएँ:<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>(A) टीनिया सोलियम</td><td>(i) डिब्बाबन्द खाद्य-पदार्थ</td></tr><tr><td>(B) एस्कैरिस लम्बरियोकोयड्स</td><td>(ii) मनुष्य के मल से किटाणुग्रस्त खाद्य-पदार्थ</td></tr><tr><td>(C) ब्रैड-वर्म</td><td>(iii) संक्रमित सूअर का माँस</td></tr><tr><td>(D) क्लास्ट्रिडियम बॉट्यूलाइनम</td><td>(iv) मनुष्य, भोजन व जल</td></tr><tr><td></td><td>(v) दूध व दूध से बने पदार्थ</td></tr></table><br>कूट :", 
+                options: ["(a) A-iii, B-iv, C-ii, D-i", "(b) A-v, B-iv, C-ii, D-i", "(c) A-v, B-ii, C-iv, D-iii", "(d) A-iii, B-ii, C-i, D-v"], 
+                correct: 0 
+            },
+            { 
+                id: 25, 
+                question: "निम्नलिखित फाइटोकेमिकल्स की क्रिया प्रणाली है:<br>(A) विषरहित करने वाले एन्जाइम्स् को उत्प्रेरित करना।<br>(B) नाइट्रोजमीन की संरचना में रुकावट डालना।<br>(C) फ्री-रैडिकल्स को निष्प्रभावी करना।<br>(D) पाचन प्रणाली में कैंसर उत्पन्न करने वाले पदार्थों को पतला और संयुक्त करना।<br><br>कूट:", 
+                options: ["(a) (B), (C), (D)", "(b) (A), (B), (C)", "(c) (A), (B), (D)", "(d) (A), (C), (D)"], 
+                correct: 2 
+            },
+            { 
+                id: 26, 
+                question: "सूची-I में दिए गए जीवाणुओं को सूची- II में उनके द्वारा होने वाली बीमारियों से सुमेलित करें :<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>I. सालमोर्नेला</td><td>A. उल्टी व दस्त</td></tr><tr><td>II. शिगैला</td><td>B. दिमाग में सिस्ट</td></tr><tr><td>III. क्लॉस्ट्रिडियम</td><td>C. गुदा में जलन</td></tr><tr><td>IV. टीनिया सोलियम</td><td>D. स्नायु तन्त्र पर प्रभाव</td></tr><tr><td>V. ट्रिचिनैला स्पाइरैलिस</td><td>E. मियादी बुखार</td></tr><tr><td></td><td>F. पेचिश</td></tr></table><br>कूट :", 
+                options: ["(a) I-E, II-F, III-A, IV-B, V-D", "(b) I-E, II-F, III-B, IV-A, V-C", "(c) I-F, II-E, III-A, IV-B, V-D", "(d) I-D, II-A, III-E, IV-F, V-B"], 
+                correct: 0 
+            },
+            { 
+                id: 27, 
+                question: "अतिसूक्ष्म जीवों को निष्क्रिय किया जा सकता है :", 
+                options: ["(a) उबाल कर", "(b) बर्फ जमाकर", "(c) निर्जलीकरण द्वारा", "(d) इन सभी के द्वारा"], 
+                correct: 3 
+            },
+            { 
+                id: 28, 
+                question: "सूची-I में दी मदों को सूची-II के साथ सुमेलित कीजिये:<br><br><table style='width:100%; text-align:left; border-collapse:collapse;' border='1' cellpadding='5'><tr><th>सूची-I</th><th>सूची-II</th></tr><tr><td>I. क्लोस्ट्रिडियम परफ्रिजेन्स</td><td>1. बैसिलेरी डिसेंटेरी</td></tr><tr><td>II. एंटामीबा हिस्टोलिटिका</td><td>2. डायरिया</td></tr><tr><td>III. शिगेला बैक्टीरियम</td><td>3. अमोबिक डिसेंटेरी</td></tr><tr><td>IV. कैम्पिलोबैक्टर जैजूनी</td><td>4. गैस्ट्रोएन्टराइटिस</td></tr><tr><td></td><td>5. हैपेटाइटिस A</td></tr></table><br>कूट:", 
+                options: ["(a) I-4, II-3, III-1, IV-2", "(b) I-1, II-2, III-3, IV-4", "(c) I-3, II-4, III-2, IV-1", "(d) I-1, II-3, III-4, IV-2"], 
+                correct: 0 
+            },
+            { 
+                id: 29, 
+               { 
+                id: 29, 
+                question: "निम्नलिखित सूक्ष्म जीवों में से कौन सा खाद्य पदार्थ जनित उन्मत्तता/नशा उत्पन्न करता है?<br>(A) स्टैफाइलोकोकस ऑरियस<br>(B) इ. कोलाई<br>(C) क्लॉस्ट्रिडियम बॉटुलिनम<br>(D) लिस्टीरिया मोनोसाइटोजीन्स<br>(E) सैलमोनेला<br><br>कूट :", 
+                options: ["(a) (A) और (B)", "(b) (A) और (C)", "(c) (C) और (D)", "(d) (D) और (E)"], 
+                correct: 1 
+            },
+            { 
+                id: 30, 
+                question: "निम्नलिखित में से कौन-सा आहारीय चिकित्सा का उद्देश्य है?", 
+                options: ["(a) पाचन तंत्र के कष्टों को देखते हुए सरल, सौम्य तथा सुपाच्य आहार प्रदान करना", "(b) रुग्णावस्था में भी उच्च पोषक स्तर की निरन्तर आपूर्ति करना", "(c) शरीर के प्रभावित अंगों को पर्याप्त विश्राम प्रदान करना", "(d) इनमें से सभी"], 
+                correct: 3 
+            },
+            { 
+                id: 31, 
+                question: "'बोटुलिज्म' इस मानवी बीमारी के कारणात्मक कारक का वर्गीकरण निम्न प्रकार होता है:", 
+                options: ["(a) बैक्टीरियल टॉक्सिन", "(b) वायरल टॉक्सिन", "(c) माइको टॉक्सिन", "(d) रासायनिक टॉक्सिन"], 
+                correct: 0 
+            },
+            { 
+                id: 32, 
+                question: "खाद्य पदार्थ विकृतिकरण किस कारण से होता है?", 
+                options: ["(a) सूक्ष्म जीवों का पैदा होना", "(b) उच्च तापमान", "(c) निम्न तापमान", "(d) भण्डारण"], 
+                correct: 0 
+            },
+            { 
+                id: 33, 
+                question: "इनमें से कौन सी प्रक्रिया भोज्य पदार्थ में जीवाणु को जाने से रोकती है?", 
+                options: ["(a) इरेडिएशन", "(b) स्टेरीलाइजेशन", "(c) फोर्टिफिकेशन", "(d) डिहाइड्रेशन"], 
+                correct: 0 
+            },
+            { 
+                id: 34, 
+                question: "बासी ब्रेड में आमतौर पर ...... का असर होता है।", 
+                options: ["(a) मोल्ड", "(b) बैक्टीरिया", "(c) कीड़े", "(d) वायरस"], 
+                correct: 0 
+            },
+            { 
+                id: 35, 
+                question: "pH 7 indicates that the solution or substance is / pH 7 इंगित करता है कि विलयन या पदार्थ है", 
+                options: ["(a) Acidic / अम्लीय", "(b) Alkaline / क्षारीय", "(c) Neutral / उदासीन", "(d) Salty / नमकीन"], 
+                correct: 2 
+            },
+            { 
+                id: 36, 
+                question: "यह अप्रत्यक्ष आय है:", 
+                options: ["(a) जमा धनराशि का ब्याज", "(b) नि:शुल्क आवास", "(c) वेतन", "(d) कृषि से प्राप्त आय"], 
+                correct: 1 
+            },
+            { 
+                id: 37, 
+                question: "पर्यावरण प्रदूषण का प्रभाव पड़ता है:", 
+                options: ["(a) जनस्वास्थ्य पर", "(b) व्यक्तिगत कार्यक्षमता पर", "(c) आर्थिक जीवन पर", "(d) उपर्युक्त सभी"], 
+                correct: 3 
+            },
+            { 
+                id: 38, 
+                question: "संक्रामक रोगों से बचाव किया जा सकता है:", 
+                options: ["(a) प्रातःकाल धूप में बैठकर", "(b) संतुलित आहार द्वारा", "(c) नियमित व्यायाम द्वारा", "(d) टीकाकरण द्वारा"], 
+                correct: 3 
+            },
+            { 
+                id: 39, 
+                question: "नेत्रों के लिए कौन-सा पौष्टिक तत्त्व आवश्यक है?", 
+                options: ["(a) विटामिन ‘ए’", "(b) विटामिन ‘बी’", "(c) विटामिन ‘सी’", "(d) विटामिन ‘के’"], 
+                correct: 0 
+            },
+            { 
+                id: 40, 
+                question: "एक ग्राम में होते हैं:", 
+                options: ["(a) 10 डेकाग्राम", "(b) 10 डेसीग्राम", "(c) 10 सेन्टीग्राम", "(d) 10 मिलीग्राम"], 
+                correct: 1 
+            },
+            { 
+                id: 41, 
+                question: "एक दर्जन अमरूद का मूल्य ₹60 है, तो एक अमरूद का मूल्य क्या होगा?", 
+                options: ["(a) ₹5.00", "(b) ₹7.00", "(c) ₹9.00", "(d) ₹12.00"], 
+                correct: 0 
+            },
+            { 
+                id: 42, 
+                question: "कपड़ा काटने से पूर्व ध्यान रखना चाहिए:", 
+                options: ["(a) कपड़े को श्रिंक करना (सिकुड़ना)", "(b) कपड़े को स्त्री करना", "(c) मिल्टन चौक से निशान लगाना", "(d) उपर्युक्त सभी"], 
+                correct: 3 
+            },
+            { 
+                id: 43, 
+                question: "भोजन पकाने की कौन-सी विधि पौष्टिक तत्त्वों को सुरक्षित रखती है?", 
+                options: ["(a) भाप द्वारा पकाना", "(b) तलना", "(c) उबालना", "(d) भूनना"], 
+                correct: 0 
+            },
+            { 
+                id: 44, 
+                question: "कार्बनिक पदार्थों के जलने से कौन-सी गैस बनती है?", 
+                options: ["(a) अमोनिया", "(b) कार्बन डाइऑक्साइड", "(c) ऑक्सीजन", "(d) नाइट्रोजन"], 
+                correct: 1 
+            },
+            { 
+                id: 45, 
+                question: "फेफड़ों की क्रियात्मक (प्रकार्यात्मक) इकाई है:", 
+                options: ["(a) कोशिका", "(b) वृक्काणु", "(c) वायुकोष (कूपिका)", "(d) उपर्युक्त में से कोई नहीं"], 
+                correct: 2 
+            },
+            { 
+                id: 46, 
+                question: "कौन-सा अंग श्वसन-तंत्र का भाग नहीं होता है?", 
+                options: ["(a) नाक", "(b) फेफड़े", "(c) यकृत्", "(d) श्वासनली"], 
+                correct: 2 
+            },
+            { 
+                id: 47, 
+                question: "शरीर का तापमान नापने के लिए आवश्यक न्यूनतम समय है:", 
+                options: ["(a) ½ मिनट", "(b) 1½ - 2 मिनट", "(c) 3 - 4 मिनट", "(d) 5 मिनट"], 
+                correct: 1 
+            },
+            { 
+                id: 48, 
+                question: "बर्फ की टोपी का प्रयोग होता है:", 
+                options: ["(a) घर से बाहर जाते समय", "(b) ठण्डी सेंक देने के लिए", "(c) ठण्ड से बचाव के लिए", "(d) उपर्युक्त सभी"], 
+                correct: 1 
+            },
+            { 
+                id: 49, 
+                question: "क्षय रोगी के लिए हानिकारक है:", 
+                options: ["(a) दूध", "(b) सन्तुलित आहार", "(c) फल का रस", "(d) मसालेदार भोजन"], 
+                correct: 3 
+            },
+            { 
+                id: 50, 
+                question: "पूर्ण तरल आहार है:", 
+                options: ["(a) दूध", "(b) चाय", "(c) दाल", "(d) उपर्युक्त में से कोई नहीं"], 
+                correct: 0 
+            },
+            { 
+                id: 51, 
+                question: "पारिवारिक आवश्यकताओं की पूर्ति के लिए उपयोग किए जाने वाले धन को कहते हैं:", 
+                options: ["(a) पारिवारिक आय", "(b) पारिवारिक व्यय", "(c) पारिवारिक बचत", "(d) पारिवारिक बजट"], 
+                correct: 1 
+            },
+            { 
+                id: 52, 
+                question: "खाने का सोडा मिलाकर पकाने से खाद्य-सामग्री का नष्ट होने वाला पौष्टिक तत्त्व है:", 
+                options: ["(a) विटामिन ‘ए’", "(b) विटामिन ‘बी’", "(c) कार्बोहाइड्रेट", "(d) प्रोटीन"], 
+                correct: 1 
+            },
+            { 
+                id: 53, 
+                question: "पारिवारिक बजट का मुख्य घटक नहीं है:", 
+                options: ["(a) भोजन", "(b) शिक्षा", "(c) मकान", "(d) फैशन"], 
+                correct: 3 
+            },
+            { 
+                id: 54, 
+                question: "शुद्ध जल में अभाव होता है:", 
+                options: ["(a) रंग का", "(b) गन्ध का", "(c) स्वाद का", "(d) उपर्युक्त सभी"], 
+                correct: 3 
+            },
+            { 
+                id: 55, 
+                question: "मक्खियों द्वारा फैलने वाला रोग है:", 
+                options: ["(a) हैजा", "(b) मलेरिया", "(c) प्लेग", "(d) रेबीज़"], 
+                correct: 0 
+            },
+            { 
+                id: 56, 
+                question: "आई.सी.एम.आर. (2010) द्वारा मध्यम श्रम श्रेणी की गर्भवती माता के लिए दी गई ऊर्जा की प्रस्तावित पौष्टिक आवश्यकता है :", 
+                options: ["(a) 2250 किलो कैलोरी", "(b) 2320 किलो कैलोरी", "(c) 2580 किलो कैलोरी", "(d) 2850 किलो कैलोरी"], 
+                correct: 2 
+            },
+            { 
+                id: 57, 
+                question: "'वसा में जल' प्रकार के इमल्शन का उदाहरण निम्न है:", 
+                options: ["(a) मक्खन", "(b) दूध", "(c) मैथोनीज", "(d) अंडे की जरदी"], 
+                correct: 0 
+            }
+        ];
+    </script>
+
+    <!-- ✅ सही किया गया JS लॉजिक कंट्रोल फ़ाइल का पाथ -->
+    <script src="../../global-quiz.js?v=3.0"></script>
+</body>
+</html>
